@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Health OS</title>
 <style>
-:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#8a8a85;--line:#e2e0da;--ghost:#efeee9;--hi:#c2410c;--med:#b45309;--lo:#15803d;--accent:#1f4b99;--accent-soft:#f2f6fd}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--card:#1f1f1d;--ink:#eeede8;--mute:#9a9a94;--line:#34332f;--ghost:#2a2a27;--accent:#7aa2f7;--accent-soft:#1d2433}}
-:root[data-theme="dark"]{--bg:#161615;--card:#1f1f1d;--ink:#eeede8;--mute:#9a9a94;--line:#34332f;--ghost:#2a2a27;--accent:#7aa2f7;--accent-soft:#1d2433}
+:root{--bg:#ecebe9;--card:#f9f9f8;--ink:#1f2227;--mute:#6c6f75;--line:#d5d4d1;--ghost:#e5e4e2;--hi:#b4441b;--med:#a3681a;--lo:#2f7a4f;--accent:#3d4654;--on-accent:#f9f9f8;--accent-soft:#e9eaec;--accent-line:#c9ccd1;--warn-bg:#f3efe6;--warn-line:#ddd2bb;--warn-ink:#6b5422;--on-tier:#ffffff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141518;--card:#1c1e22;--ink:#e5e4e2;--mute:#9a9ca1;--line:#30333a;--ghost:#272a30;--hi:#e0784f;--med:#d9a24e;--lo:#6fbf8e;--accent:#c9ccd1;--on-accent:#16181b;--accent-soft:#23262c;--accent-line:#3a3e46;--warn-bg:#2a2620;--warn-line:#4a4234;--warn-ink:#e3cf9f;--on-tier:#141518}}
+:root[data-theme="dark"]{--bg:#141518;--card:#1c1e22;--ink:#e5e4e2;--mute:#9a9ca1;--line:#30333a;--ghost:#272a30;--hi:#e0784f;--med:#d9a24e;--lo:#6fbf8e;--accent:#c9ccd1;--on-accent:#16181b;--accent-soft:#23262c;--accent-line:#3a3e46;--warn-bg:#2a2620;--warn-line:#4a4234;--warn-ink:#e3cf9f;--on-tier:#141518}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,system-ui,sans-serif}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -15,6 +15,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 nav.side{border-right:1px solid var(--line);padding:20px 12px;background:var(--card)}
 .brand{font-weight:800;font-size:17px;padding:0 10px 18px}
 .nav-i{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-radius:8px;margin-bottom:2px;font-size:14px;border:0;background:none;width:100%;text-align:left}
+.ico{width:10px;height:10px;border-radius:50%;border:2px solid currentColor;flex:none;margin-right:10px}
+.nav-i.on .ico{background:currentColor}
+.lbl{flex:1}
 .nav-i.on{background:var(--ghost);font-weight:700}
 .nav-i.off{color:var(--mute);opacity:.6;cursor:not-allowed}
 .soon{font-size:10px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line);border-radius:99px;padding:1px 6px}
@@ -22,7 +25,7 @@ main{padding:28px 32px;max-width:980px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 h1{font-size:24px;margin:0}
 .sub{color:var(--mute);margin:2px 0 0}
-.cta{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:700}
+.cta{background:var(--accent);color:var(--on-accent);border:0;border-radius:10px;padding:11px 16px;font-weight:700}
 .ghostbtn{background:none;border:1px solid var(--line);border-radius:10px;padding:9px 14px}
 .chip{border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;background:var(--card)}
 .chip.inf{border-style:dashed}
@@ -36,11 +39,11 @@ h1{font-size:24px;margin:0}
 .row.click:focus-visible{outline:2px solid var(--accent)}
 .food{font-weight:700}
 .meta{font-size:12.5px;color:var(--mute)}
-.swapl{font-size:13px;color:var(--accent);margin-top:2px}
-.tier{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff;white-space:nowrap;align-self:flex-start}
+.swapl{font-size:13px;color:var(--ink);opacity:.8;margin-top:2px}
+.tier{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:var(--on-tier);white-space:nowrap;align-self:flex-start}
 .t-hi{background:var(--hi)}.t-med{background:var(--med)}.t-lo{background:var(--lo)}.t-unk{background:#8a8a85}
 .c-hi{color:var(--hi)}.c-med{color:var(--med)}.c-lo{color:var(--lo)}.c-unk{color:var(--mute)}
-.banner{background:#fff7e6;border:1px solid #f5d9a8;color:#7a4b00;border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:14px}
+.banner{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:14px}
 .agentbtn{position:fixed;right:24px;bottom:24px;background:var(--ink);color:var(--bg);border:0;border-radius:99px;padding:12px 18px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:5}
 .scrim{position:fixed;inset:0;background:rgba(20,20,18,.45);display:none;align-items:center;justify-content:center;z-index:10;padding:16px}
 .scrim.open{display:flex}
@@ -56,13 +59,13 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
 .quick button{border:1px solid var(--line);background:var(--ghost);border-radius:99px;padding:4px 10px;font-size:12.5px}
 .big{font-size:26px;font-weight:800;margin-top:8px}
 .badge{display:inline-block;font-size:12px;font-weight:600;background:var(--ghost);border-radius:6px;padding:3px 8px;margin-top:6px}
-.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#bbf7d0,#fde68a,#fdba74);margin:18px 0 4px}
+.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#c9dccf,#e6dcc4,#e6c3b1);margin:18px 0 4px}
 .band{position:absolute;top:-4px;height:20px;border:2px solid var(--ink);border-radius:6px;background:rgba(29,29,27,.1);transition:all .5s}
-.dot{position:absolute;top:-3px;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid #fff;transition:all .5s}
+.dot{position:absolute;top:-3px;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid var(--card);transition:all .5s}
 .scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mute)}
 .ref{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px}
 .ref b{font-weight:700}
-.swap{margin-top:12px;border:1px solid #c7d6f0;background:var(--accent-soft);border-radius:10px;padding:12px;font-size:14px}
+.swap{margin-top:12px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:10px;padding:12px;font-size:14px}
 .why{font-size:12.5px;color:var(--mute);margin:10px 0 0;padding-left:18px}
 .miss{font-size:12.5px;color:var(--mute);margin-top:8px}
 .cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
@@ -88,7 +91,9 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
  .app{grid-template-columns:1fr}
  nav.side{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:6px;border-right:0;border-top:1px solid var(--line);z-index:4}
  nav.side .brand{display:none}
- .nav-i{flex-direction:column;font-size:11px;padding:6px;width:auto}
+ .nav-i{flex-direction:column;font-size:11px;padding:6px;width:auto;gap:4px}
+ .ico{margin-right:0}
+ #themeBtn{display:none}
  .nav-i .soon{display:none}
  main{padding:18px 16px 90px}
  .agentbtn{bottom:76px;right:16px}
@@ -101,12 +106,12 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
 <div class="app">
 <nav class="side" aria-label="Modules">
  <div class="brand">Health OS</div>
- <button class="nav-i on">🧪 Exposure</button>
- <button class="nav-i off" title="Coming soon" disabled>🩸 Bloodwork <span class="soon">Soon</span></button>
- <button class="nav-i off" title="Coming soon" disabled>🌙 Sleep <span class="soon">Soon</span></button>
- <button class="nav-i off" title="Coming soon" disabled>🏋️ Gym &amp; Nutrition <span class="soon">Soon</span></button>
- <button class="nav-i off" title="Coming soon" disabled>🧭 Overview <span class="soon">Soon</span></button>
- <button class="nav-i" id="themeBtn" style="margin-top:16px;color:var(--mute)">🌙 Dark mode</button>
+ <button class="nav-i on"><span class="ico"></span><span class="lbl">Exposure</span></button>
+ <button class="nav-i off" title="Coming soon" disabled><span class="ico"></span><span class="lbl">Bloodwork</span> <span class="soon">Soon</span></button>
+ <button class="nav-i off" title="Coming soon" disabled><span class="ico"></span><span class="lbl">Sleep</span> <span class="soon">Soon</span></button>
+ <button class="nav-i off" title="Coming soon" disabled><span class="ico"></span><span class="lbl">Gym &amp; Nutrition</span> <span class="soon">Soon</span></button>
+ <button class="nav-i off" title="Coming soon" disabled><span class="ico"></span><span class="lbl">Overview</span> <span class="soon">Soon</span></button>
+ <button class="nav-i" id="themeBtn" style="margin-top:16px;color:var(--mute)">Dark mode</button>
 </nav>
 <main id="main"></main>
 </div>
@@ -283,7 +288,7 @@ function ask(q){if(!q)return;const a=QA[q]||"I can't answer that yet. In this pr
  $("#chat").insertAdjacentHTML("beforeend",`<div class="msg u">${q}</div><div class="msg a">${a}</div>`);const i=$("#q");if(i)i.value=""}
 
 $("#agentBtn").onclick=openAgent;
-$("#themeBtn").onclick=()=>{const r=document.documentElement,d=r.dataset.theme==="dark";r.dataset.theme=d?"light":"dark";$("#themeBtn").textContent=d?"🌙 Dark mode":"☀️ Light mode"};
+$("#themeBtn").onclick=()=>{const r=document.documentElement,d=r.dataset.theme==="dark";r.dataset.theme=d?"light":"dark";$("#themeBtn").textContent=d?"Dark mode":"Light mode"};
 $("#statePick").onchange=e=>{S.state=e.target.value;renderDash()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#checkScrim").classList.remove("open");$("#agentScrim").classList.remove("open");renderDash()}});
 renderDash();

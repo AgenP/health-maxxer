@@ -19,6 +19,7 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 13 | Scope after self-interview | **Keep both food and water.** Water (tap vs bottled vs machine, Location-dependent) joins food as a first-class Food Check. Philip on the result-card wireframe: the Starbucks swap was "literally immediately valuable" and a reminder that food exposure can be minimised | Self-interview: `00-self-interview.md` |
 | 14 | Swap ROI | Every Swap shows its **Swap Impact** with an evidence label. Where no lab pair backs it, say so explicitly as a limitation and name the fix: run our own studies | Philip's concern: is the recommended action resource-backed? Also acknowledged: good science takes a lot of resources, so "run our own studies" is a roadmap item with real cost, not a quick fix |
 | 15 | Demo order (amends 9) | **Food first, then water.** Starbucks wrap swap (lab-backed Swap Impact) first, then the NYC hotel-tap story as the location/global angle | |
+| 16 | Catch-all side path (amends 9) | **Folded into the water story**: with no NYC tap samples in PlasticList, the water check lands at a lower Evidence Tier with a wider band and "would sharpen this" inputs, so it doubles as the honesty demo | B4 |
 
 ## Jacquie conflicts acknowledged
 

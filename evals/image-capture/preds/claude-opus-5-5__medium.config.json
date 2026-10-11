@@ -1,0 +1,220 @@
+{
+  "endpoint": "client.beta.messages.create",
+  "sdk": "anthropic-python 1.13.0",
+  "request": {
+    "model": "claude-opus-5-5",
+    "max_tokens": 4000,
+    "system": "You extract structured facts from a photo a person took of food, drink, or a water machine. The facts feed an estimate of exposure to microplastics and plastic-associated chemicals, and the person sees each fact as an editable chip, so a confident wrong answer is worse than \"unknown\".\n\nReport only what the photo shows or what printed text on it states. Use \"unknown\" (or an empty list) whenever you cannot see it. Do not infer a brand from style alone.\n- brand / product_name: as printed; \"unknown\" if not legible.\n- packaging_material: every material in direct contact with the food or drink that you can see (e.g. a coffee cup is paper_cup_plastic_lid; a can is metal_can; a clear water bottle is pet_plastic only if marked or clearly a standard PET bottle, otherwise other_plastic). none_visible for unpackaged food.\n- heated: hot if steam, a hot drink, or freshly heated food is evident; cold if iced or chilled; ambient for shelf-stable products at room temperature.\n- machine_type and jug_material only for water machines; otherwise not_a_machine and none.\n- certification_marks: certification text you can actually read (e.g. \"NSF/ANSI 53\"); empty list if none.\n- vessel: what the person would drink from, if visible.\n- confidence: your confidence in each listed field.",
+    "output_config": {
+      "effort": "medium",
+      "format": {
+        "type": "json_schema",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "subject_type",
+            "brand",
+            "product_name",
+            "food_category",
+            "packaging_material",
+            "heated",
+            "machine_type",
+            "jug_material",
+            "certification_marks",
+            "vessel",
+            "confidence",
+            "notes"
+          ],
+          "properties": {
+            "subject_type": {
+              "type": "string",
+              "enum": [
+                "packaged_product",
+                "prepared_food",
+                "drink_in_vessel",
+                "water_machine",
+                "not_food"
+              ]
+            },
+            "brand": {
+              "type": "string"
+            },
+            "product_name": {
+              "type": "string"
+            },
+            "food_category": {
+              "type": "string",
+              "enum": [
+                "water",
+                "soda",
+                "coffee_tea",
+                "dairy",
+                "canned",
+                "snack",
+                "prepared_meal",
+                "fast_food",
+                "produce",
+                "other",
+                "unknown"
+              ]
+            },
+            "packaging_material": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "pet_plastic",
+                  "other_plastic",
+                  "glass",
+                  "metal_can",
+                  "paper_carton",
+                  "paper_cup_plastic_lid",
+                  "paper",
+                  "foil",
+                  "none_visible",
+                  "unknown"
+                ]
+              }
+            },
+            "heated": {
+              "type": "string",
+              "enum": [
+                "hot",
+                "cold",
+                "ambient",
+                "unknown"
+              ]
+            },
+            "machine_type": {
+              "type": "string",
+              "enum": [
+                "bottle_top_cooler_with_jug",
+                "bottom_load_cooler",
+                "plumbed_point_of_use",
+                "bottle_filling_station",
+                "drinking_fountain",
+                "fridge_dispenser",
+                "countertop_filter",
+                "not_a_machine",
+                "unknown"
+              ]
+            },
+            "jug_material": {
+              "type": "string",
+              "enum": [
+                "polycarbonate",
+                "pet",
+                "other_plastic",
+                "glass",
+                "none",
+                "unknown"
+              ]
+            },
+            "certification_marks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "vessel": {
+              "type": "string",
+              "enum": [
+                "plastic_bottle",
+                "plastic_cup",
+                "paper_cup",
+                "metal",
+                "glass",
+                "ceramic",
+                "none",
+                "unknown"
+              ]
+            },
+            "confidence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "subject_type",
+                "brand",
+                "packaging_material",
+                "heated",
+                "machine_type"
+              ],
+              "properties": {
+                "subject_type": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                },
+                "brand": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                },
+                "packaging_material": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                },
+                "heated": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                },
+                "machine_type": {
+                  "type": "string",
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                }
+              }
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "betas": [
+      "server-side-fallback-2026-07-01"
+    ],
+    "extra_body": {
+      "fallbacks": "default"
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image",
+            "source": {
+              "type": "base64",
+              "media_type": "image/jpeg",
+              "data": "<base64 image bytes>"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Extract the facts from this photo."
+          }
+        ]
+      }
+    ]
+  },
+  "note": "Regenerated from the same build_request code after the run; request code unchanged since (pinned by test_run_eval.py)."
+}

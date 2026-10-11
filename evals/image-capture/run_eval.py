@@ -59,23 +59,31 @@ def load_env():
                 os.environ.setdefault(k.strip(), v.strip().strip("'\""))
 
 
+def build_request(model, effort, media, data):
+    return {
+        "model": model,
+        "max_tokens": 4000,
+        "system": SYSTEM,
+        "output_config": {"effort": effort, "format": {"type": "json_schema", "schema": SCHEMA}},
+        "betas": ["server-side-fallback-2026-07-01"],
+        "extra_body": {"fallbacks": "default"},
+        "messages": [{"role": "user", "content": [
+            {"type": "image", "source": {"type": "base64", "media_type": media, "data": data}},
+            {"type": "text", "text": "Extract the facts from this photo."},
+        ]}],
+    }
+
+
+def request_config(model, effort, media="image/jpeg"):
+    return build_request(model, effort, media, "<base64 image bytes>")
+
+
 def predict(client, model, effort, row):
     path = ROOT / row["file"]
     media = mimetypes.guess_type(path.name)[0] or "image/jpeg"
     data = base64.standard_b64encode(path.read_bytes()).decode()
     t0 = time.time()
-    resp = client.beta.messages.create(
-        model=model,
-        max_tokens=4000,
-        system=SYSTEM,
-        output_config={"effort": effort, "format": {"type": "json_schema", "schema": SCHEMA}},
-        betas=["server-side-fallback-2026-07-01"],
-        extra_body={"fallbacks": "default"},
-        messages=[{"role": "user", "content": [
-            {"type": "image", "source": {"type": "base64", "media_type": media, "data": data}},
-            {"type": "text", "text": "Extract the facts from this photo."},
-        ]}],
-    )
+    resp = client.beta.messages.create(**build_request(model, effort, media, data))
     latency = time.time() - t0
     out = {"id": row["id"], "set": row["set"], "served_model": resp.model, "stop_reason": resp.stop_reason,
            "latency_s": round(latency, 2), "input_tokens": resp.usage.input_tokens, "output_tokens": resp.usage.output_tokens}
@@ -107,6 +115,9 @@ def main():
     outdir = ROOT / "preds"
     outdir.mkdir(exist_ok=True)
     outfile = outdir / f"{a.model}__{a.effort}.jsonl"
+    (outdir / f"{a.model}__{a.effort}.config.json").write_text(json.dumps(
+        {"endpoint": "client.beta.messages.create", "sdk": f"anthropic-python {anthropic.__version__}",
+         "request": request_config(a.model, a.effort)}, indent=2))
 
     def safe(row):
         try:

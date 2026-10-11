@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health-maxxer Pitch</title>
+<style>
+:root{--bg:#ecebe9;--card:#f9f9f8;--ink:#1f2227;--mute:#6c6f75;--line:#d5d4d1;--ghost:#e5e4e2;--hi:#b4441b;--med:#a3681a;--lo:#2f7a4f;--accent:#3d4654}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141518;--card:#1c1e22;--ink:#e5e4e2;--mute:#9a9ca1;--line:#30333a;--ghost:#272a30;--hi:#e0784f;--med:#d9a24e;--lo:#6fbf8e;--accent:#c9ccd1}}
+:root[data-theme="dark"]{--bg:#141518;--card:#1c1e22;--ink:#e5e4e2;--mute:#9a9ca1;--line:#30333a;--ghost:#272a30;--hi:#e0784f;--med:#d9a24e;--lo:#6fbf8e;--accent:#c9ccd1}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,system-ui,sans-serif}
+.deck{height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.slide{display:none;width:min(1200px,100%);aspect-ratio:16/9;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3.2vw,44px) clamp(20px,4.5vw,64px);position:relative;overflow:hidden}
+.slide.on{display:flex;flex-direction:column}
+.slide>*:not(.ring){position:relative;z-index:1}
+.kicker{font-size:clamp(11px,1.1vw,14px);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:700}
+h1{font-size:clamp(34px,6vw,84px);line-height:1;margin:.25em 0 .2em;letter-spacing:-.02em}
+h2{font-size:clamp(22px,2.8vw,38px);line-height:1.08;margin:.25em 0 .45em;letter-spacing:-.01em}
+.lead{font-size:clamp(15px,1.9vw,26px);color:var(--mute);max-width:30em}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:var(--mute);font-size:clamp(11px,1.1vw,14px)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.6vw,22px);flex:1}
+.col{border:1px solid var(--line);border-radius:14px;padding:clamp(10px,1.3vw,18px);background:var(--bg)}
+.col h3{margin:0 0 .4em;font-size:clamp(13px,1.3vw,17px);text-transform:uppercase;letter-spacing:.08em}
+.col p,.col li{font-size:clamp(11px,1.2vw,16px);margin:.25em 0}
+.col ul{padding-left:1.1em;margin:0}
+.big{font-size:clamp(22px,3vw,42px);font-weight:800;line-height:1}
+.c-hi{color:var(--hi)}.c-med{color:var(--med)}.c-lo{color:var(--lo)}
+.pain{border-top:4px solid var(--hi)}.agit{border-top:4px solid var(--med)}.sol{border-top:4px solid var(--lo)}
+.flow{display:flex;align-items:stretch;gap:clamp(6px,1vw,14px);margin:0 0 .8em}
+.step{flex:1;border:1px solid var(--line);border-radius:12px;padding:clamp(8px,1vw,14px);background:var(--bg);font-size:clamp(10px,1.1vw,14.5px)}
+.step b{display:block;font-size:clamp(12px,1.4vw,18px);margin-bottom:.2em}
+.arrow{align-self:center;color:var(--mute);font-size:clamp(14px,2vw,26px)}
+.tiers{display:flex;gap:6px;flex-wrap:wrap;margin-top:.4em}
+.tiers span{font-size:clamp(10px,1.1vw,13px);border:1px solid var(--line);border-radius:99px;padding:2px 9px;background:var(--card)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.6vw,22px)}
+a{color:inherit}
+.src{font-size:clamp(9px,.95vw,12px);color:var(--mute)}
+.nav{position:fixed;bottom:14px;right:16px;display:flex;gap:6px}
+.nav button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer}
+.dots{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mute)}
+.dots i.on{background:var(--mute)}
+.ring{position:absolute;right:-12%;top:-38%;width:40%;z-index:0;aspect-ratio:1;border-radius:50%;border:clamp(10px,2vw,28px) solid var(--ghost)}
+@media (max-width:700px){.slide{aspect-ratio:auto;min-height:90vh}.cols,.two{grid-template-columns:1fr}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<section class="slide on" aria-label="Intro">
+ <div class="ring" aria-hidden="true"></div>
+ <div class="kicker">AI Engineer NYC 2026 · Hackathon demo</div>
+ <h1>Health-maxxer</h1>
+ <p class="lead">Snap what you're about to eat or drink. See how much plastic chemical exposure it likely carries, how sure we are, and a lower-exposure swap.</p>
+ <p class="lead" style="font-size:clamp(13px,1.5vw,20px);margin-top:1.2em">The first live module of a personal <b style="color:var(--ink)">Health OS</b>. Bloodwork, sleep, and gym &amp; nutrition come next.</p>
+ <div class="foot"><span>Philip Agenmonmen</span><span>Built with Claude Opus 5.5 + Claude Code</span></div>
+</section>
+
+<section class="slide" aria-label="The problem">
+ <div class="kicker">The problem</div>
+ <h2>You make exposure decisions in seconds, with no information.</h2>
+ <div class="cols">
+  <div class="col pain"><h3>Pain</h3>
+   <p>Yesterday, in my NYC hotel room, I looked at the tap and had one thought: <i>"uncertainty about quality."</i></p>
+   <p>I went straight to the front desk and took two plastic bottles. No lookup. No comparison.</p></div>
+  <div class="col agit"><h3>Why it matters</h3>
+   <p><span class="big c-hi">72%</span><br>of 236 everyday US foods and drinks had detectable phthalates in lab tests.</p>
+   <p><span class="big c-med">~2x</span><br>the microplastic particles in bottled water vs tap.</p>
+   <p>The data exists, but it's buried in lab reports and PDFs, not where you're choosing.</p></div>
+  <div class="col sol"><h3>Solution</h3>
+   <p>Point your phone at it. In about 5 seconds you get:</p>
+   <ul><li>a relative tier: lower, typical, higher</li><li>how strong the evidence is (lab-measured or inferred)</li><li>how it compares to official reference levels</li><li>a swap that's actually backed by data</li></ul></div>
+ </div>
+ <div class="src" style="margin-top:10px">Sources: <a href="https://www.plasticlist.org/report">PlasticList</a> (DEHP-equivalents; 169 of 236 products had at least one sample above the limit of quantification) · <a href="https://doi.org/10.3389/fchem.2018.00407">Mason et al. 2018</a> (particles &gt;100 µm) · Philip's own story (self-interview; the only user research so far)</div>
+</section>
+
+<section class="slide" aria-label="How it works">
+ <div class="kicker">How it works, and how far to trust it</div>
+ <h2 style="margin-bottom:.35em">Honest by design: every estimate carries its evidence.</h2>
+ <div class="flow">
+  <div class="step"><b>1. See</b>Claude Opus 5.5 reads the photo: brand, packaging, heated or not. Every field is an editable chip.</div><div class="arrow">→</div>
+  <div class="step"><b>2. Match</b>We match it against 618 lab samples from 236 products, falling back to similar products, then the category.</div><div class="arrow">→</div>
+  <div class="step"><b>3. Estimate</b>Tier and uncertainty band, against reference levels from EFSA, EPA and NYC DEP.<div class="tiers"><span>T1 lab</span><span>T2 similar</span><span>T3 category</span><span>T5 unknown</span></div></div><div class="arrow">→</div>
+  <div class="step"><b>4. Swap</b>A lower option, with its impact and evidence, e.g. warmed wrap to egg bites: about 4.5x lower.</div>
+ </div>
+ <div class="two">
+  <div class="col"><h3>What we checked</h3><ul>
+   <li>Photo reading: packaging right on 17/17 product photos and 23/26 real-world snaps (after fixing wrong labels). No confident wrong packaging calls.</li>
+   <li>About 5 seconds and $0.03 per photo</li>
+   <li>21 automated tests on the estimate engine</li></ul></div>
+  <div class="col"><h3>What we don't know yet</h3><ul>
+   <li>A "higher" food can still be under 1% of the EU tolerable daily intake. We say so on the card.</li>
+   <li>No lab data for NYC tap water, and microplastics have no official reference level</li>
+   <li>Next: run our own lab studies, then add bloodwork to see if swaps change what's in your body</li></ul></div>
+ </div>
+</section>
+
+</div>
+<div class="dots" id="dots"></div>
+<div class="nav"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><button id="theme">Dark</button></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let i=0;
+const dots=document.getElementById('dots');slides.forEach(()=>dots.appendChild(document.createElement('i')));
+function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('on',k===i));[...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(i+1)}if(['ArrowLeft','PageUp'].includes(e.key))show(i-1)});
+document.getElementById('next').onclick=()=>show(i+1);document.getElementById('prev').onclick=()=>show(i-1);
+document.getElementById('theme').onclick=e=>{const r=document.documentElement,d=r.dataset.theme==='dark';r.dataset.theme=d?'light':'dark';e.target.textContent=d?'Dark':'Light'};
+show((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>

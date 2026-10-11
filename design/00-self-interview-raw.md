@@ -14,4 +14,6 @@ Stories surfaced: (1) hotel bottled water, (2) hackathon plastic bottle then met
 ## Q2: the hackathon moment, bottle to metal cup
 > "I wanted more water, couldnt find more bottled water and saw someone at a water machine getting water then looked for something I could use to hold the water (instead of the plastic bottle I just used) and found a WeWork metal cup"
 
-Observations: trigger was running out (bottles unavailable), not concern; social cue (someone else at the machine) revealed the option; deliberately did not refill the plastic bottle; searched for a non-plastic vessel.
+Observations: trigger was running out (bottles unavailable), not concern; social cue (someone else at the machine) revealed the option; searched for a vessel "instead of the plastic bottle I just used".
+
+Correction (Q3 attempt): interviewer assumed Philip was holding the empty bottle; he was not. Leading premise withdrawn.

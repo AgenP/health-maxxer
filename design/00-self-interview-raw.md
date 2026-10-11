@@ -10,3 +10,8 @@ Stories surfaced: (1) hotel bottled water, (2) hackathon plastic bottle then met
 
 ## Parking lot (solution ideas, not needs)
 - "Machine" input: photo of the water machine / dispenser, analyse its spec sheet for a microplastic estimate; ideally a direct lab result.
+
+## Q2: the hackathon moment, bottle to metal cup
+> "I wanted more water, couldnt find more bottled water and saw someone at a water machine getting water then looked for something I could use to hold the water (instead of the plastic bottle I just used) and found a WeWork metal cup"
+
+Observations: trigger was running out (bottles unavailable), not concern; social cue (someone else at the machine) revealed the option; deliberately did not refill the plastic bottle; searched for a non-plastic vessel.

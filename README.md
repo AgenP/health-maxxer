@@ -1,6 +1,6 @@
 # Health-maxxer
 
-NY hackathon, submission 5pm ET, 2026-10-11.
+AIE & MLH NY hackathon (AI Engineer NYC 2026), submission 5pm ET, 2026-10-11.
 
 **Challenge:** Health-maxxing. Tap into supply chain and estimate microplastic and other negative materials/chemicals/processes.
 

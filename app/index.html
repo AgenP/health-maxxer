@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -102,6 +102,7 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
  <button class="nav-i off" title="Coming soon" disabled>🌙 Sleep <span class="soon">Soon</span></button>
  <button class="nav-i off" title="Coming soon" disabled>🏋️ Gym &amp; Nutrition <span class="soon">Soon</span></button>
  <button class="nav-i off" title="Coming soon" disabled>🧭 Overview <span class="soon">Soon</span></button>
+ <button class="nav-i" id="themeBtn" style="margin-top:16px;color:var(--mute)">🌙 Dark mode</button>
 </nav>
 <main id="main"></main>
 </div>
@@ -266,6 +267,7 @@ function ask(q){if(!q)return;const a=QA[q]||"I can't answer that yet. In this pr
  $("#chat").insertAdjacentHTML("beforeend",`<div class="msg u">${q}</div><div class="msg a">${a}</div>`);const i=$("#q");if(i)i.value=""}
 
 $("#agentBtn").onclick=openAgent;
+$("#themeBtn").onclick=()=>{const r=document.documentElement,d=r.dataset.theme==="dark";r.dataset.theme=d?"light":"dark";$("#themeBtn").textContent=d?"🌙 Dark mode":"☀️ Light mode"};
 $("#statePick").onchange=e=>{S.state=e.target.value;renderDash()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#checkScrim").classList.remove("open");$("#agentScrim").classList.remove("open");renderDash()}});
 renderDash();

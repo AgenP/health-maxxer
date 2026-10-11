@@ -32,3 +32,8 @@ Observations: the need was portable water for tomorrow; plastic bottles won on p
 > "in my hotel room. Thats when I decided to ask for bottled water. Enough for current thirst and for the morning before I get outside and can somewhere where I can buy a drink"
 
 Observations: the hotel-room tap is the real origin of the hotel story. Uncertainty about local tap water pushed him to plastic bottled water, swapping an unknown risk (tap) for a known-but-unweighed one (plastic). Quantity planned to bridge until he could buy a drink outside.
+
+## Q6: tap to front desk
+> "I went downstairs directly to the front desk"
+
+Observation: no lookup, no research step; the decision was immediate.

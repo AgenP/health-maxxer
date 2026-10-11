@@ -131,7 +131,10 @@ def estimate(attrs, products):
     out = {"kind": "food", "missing": _missing(attrs), "swap": None,
            "reference_level": None, "reference_reason": None}
 
-    hit = match_product(_query(attrs), products)
+    pool_products = products
+    if attrs.get("heated") in ("cold", "ambient"):
+        pool_products = {k: p for k, p in products.items() if "warmed" not in p.name.lower()}
+    hit = match_product(_query(attrs), pool_products)
     if hit:
         lo, hi = _range(hit)
         m = product_median(hit)

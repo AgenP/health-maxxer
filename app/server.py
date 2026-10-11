@@ -13,9 +13,12 @@ sys.path.insert(0, str(APP))
 import anthropic
 import run_eval
 from estimate import map_extraction
+from check import run_check
+from engine.loader import load_products
 
 run_eval.load_env()
 CLIENT = anthropic.Anthropic()
+PRODUCTS = load_products(APP.parent / "data" / "plasticlist" / "plasticlist.tsv")
 
 
 def extract(data_url, text):
@@ -33,12 +36,15 @@ class Handler(SimpleHTTPRequestHandler):
         super().__init__(*a, directory=str(APP), **kw)
 
     def do_POST(self):
-        if self.path != "/api/extract":
+        if self.path not in ("/api/extract", "/api/check"):
             self.send_error(404)
             return
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         try:
-            out = map_extraction(extract(body["image"], body.get("text", "")))
+            if self.path == "/api/check":
+                out = run_check(body, extract, PRODUCTS)
+            else:
+                out = map_extraction(extract(body["image"], body.get("text", "")))
             code = 200
         except Exception as e:
             out, code = {"error": str(e)}, 502

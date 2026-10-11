@@ -59,9 +59,13 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
 .quick button{border:1px solid var(--line);background:var(--ghost);border-radius:99px;padding:4px 10px;font-size:12.5px}
 .big{font-size:26px;font-weight:800;margin-top:8px}
 .badge{display:inline-block;font-size:12px;font-weight:600;background:var(--ghost);border-radius:6px;padding:3px 8px;margin-top:6px}
-.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#c9dccf,#e6dcc4,#e6c3b1);margin:18px 0 4px}
+.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#b9dcc4,#ead8a8,#e9b79c);margin:18px 0 4px}
 .band{position:absolute;top:-4px;height:20px;border:2px solid var(--ink);border-radius:6px;background:rgba(29,29,27,.1);transition:all .5s}
 .dot{position:absolute;top:-3px;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid var(--card);transition:all .5s}
+.tb-hi .band{border-color:var(--hi);background:color-mix(in srgb,var(--hi) 14%,transparent)}.tb-hi .dot{background:var(--hi)}
+.tb-med .band{border-color:var(--med);background:color-mix(in srgb,var(--med) 14%,transparent)}.tb-med .dot{background:var(--med)}
+.tb-lo .band{border-color:var(--lo);background:color-mix(in srgb,var(--lo) 14%,transparent)}.tb-lo .dot{background:var(--lo)}
+.tb-unk .band{border-color:var(--mute);border-style:dashed}
 .scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mute)}
 .ref{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px}
 .ref b{font-weight:700}
@@ -181,7 +185,7 @@ function renderDash(){
  <div style="display:flex;gap:8px;align-items:center"><select id="locSel" aria-label="Location" style="width:auto">${LOCATIONS.map(l=>`<option ${l===S.location?"selected":""}>📍 ${l}</option>`).join("")}</select>
  <button class="cta" onclick="openCheck()">+ Check a food</button></div></div>
  ${rows.length?`<div class="card"><h3>Your biggest sources this week</h3>
- ${rows.map((r,i)=>`<div class="row click" role="button" tabindex="0" onclick="openFromRow('${r.k}')" onkeydown="if(event.key==='Enter')openFromRow('${r.k}')"><div><div class="food">${i+1}. ${r.label}</div><div class="meta">${r.n}× this week · ${r.ev}</div><div class="swapl">Swap: ${r.swap} →</div></div><span class="tier ${tierClass(r.tier)}">${tierWord(r.tier)}</span></div>`).join("")}
+ ${rows.map((r,i)=>`<div class="row click" role="button" tabindex="0" onclick="openFromRow('${r.k}','${(r.label||'').replace(/'/g,'')}')" onkeydown="if(event.key==='Enter')openFromRow('${r.k}','${(r.label||'').replace(/'/g,'')}')"><div><div class="food">${i+1}. ${r.label}</div><div class="meta">${r.n}× this week · ${r.ev}</div><div class="swapl">Swap: ${r.swap} →</div></div><span class="tier ${tierClass(r.tier)}">${tierWord(r.tier)}</span></div>`).join("")}
  <div class="meta" style="margin-top:8px">${unrated} checks unrated (not enough data). There's no single exposure score on purpose: tiers don't add up.</div></div>`
  :`<div class="card empty"><div style="font-size:34px">🥤</div><h2 style="color:var(--ink);margin:8px 0 4px">Nothing checked yet</h2><p>Snap or type what you're about to eat or drink. Each check builds your weekly picture.</p><button class="cta" onclick="openCheck()">Check your first food</button></div>`}
  <p class="meta" style="margin-top:16px">Estimates are relative and come with an evidence label. Lab data: ${cite('plasticlist','PlasticList')} (US). Water: ${cite('dep','NYC DEP 2025')}, ${cite('mason','Mason 2018')}.</p>`;
@@ -189,7 +193,7 @@ function renderDash(){
 }
 
 function openCheck(){S.photo=null;S.photoData=null;S.text="";renderCheckInput();$("#checkScrim").classList.add("open")}
-function openFromRow(k){S.photo=null;S.photoData=null;S.live=false;$("#checkScrim").classList.add("open");if(k==="chick"){answerUnknown("can",[["Canned chickpeas",0],["Can",0]]);return}showResult(EST[k]?k:"unknown")}
+function openFromRow(k,i){if(k==="live"){const h=S.history.find(x=>x.label===i);S.lastRes=h.res;$("#checkScrim").classList.add("open");renderLive(h.res);return}S.photo=null;S.photoData=null;S.live=false;$("#checkScrim").classList.add("open");if(k==="chick"){answerUnknown("can",[["Canned chickpeas",0],["Can",0]]);return}showResult(EST[k]?k:"unknown")}
 function closeCheck(){$("#checkScrim").classList.remove("open");renderDash()}
 function renderCheckInput(err){
  $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>
@@ -213,17 +217,57 @@ function classify(text){
  if(/wrap|starbucks|feta/.test(t))return /not heated|unheated|cold/.test(t)?"wrapCold":"wrap";
  return "unknown";
 }
+async function postCheck(body){
+ if(S.state==="offline"||location.protocol==="file:")return null;
+ try{const r=await fetch("/api/check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});return r.ok?await r.json():null}catch(e){return null}
+}
 async function submitCheck(){
  S.text=($("#txt")||{}).value||S.text;
  if(!S.text&&!S.photo){renderCheckInput("Add a photo or type what it is.");return}
  $("#checkModal").innerHTML=`<p><span class="spinner"></span>Reading ${S.photo?"your photo":"that"}…</p>`;
- let key=classify(S.text),attrsLive=null,hint=null;S.live=false;
- if(S.photoData&&S.state!=="offline"){
-  try{const r=await fetch("/api/extract",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({image:S.photoData,text:S.text,location:S.location})});
-   if(r.ok){const j=await r.json();key=j.estimate_key||key;attrsLive=(j.chips&&j.chips.length)?j.chips:null;hint=j.packaging_hint||null;S.live=true}}catch(e){}
- } else await new Promise(r=>setTimeout(r,700));
- if(key==="unknown"&&hint){answerUnknown(hint,attrsLive);return}
- showResult(key,attrsLive);
+ const res=await postCheck({image:S.photoData,text:S.text,location:S.location});
+ if(res){S.live=true;renderLive(res);return}
+ S.live=false;showResult(classify(S.text));
+}
+const TIER_WORD={hi:"Higher than most foods",med:"About typical",lo:"Lower than most foods",unk:"We can't rate this yet"};
+const EV_LABEL={T1:"🧪 Lab-measured · T1",T2:"Similar products · T2",T3:"Inferred from category · T3",T5:"Global prior · T5"};
+const MISSING_LABEL={brand:"brand",product_name:"product name",packaging_material:"packaging",heated:"whether it was heated"};
+function renderLive(res){
+ S.lastRes=res;const e=res.estimate,a=res.attrs;
+ if(e.kind==="water"){renderWater(EST.water,res.chips.length?res.chips:null);return}
+ const name=e.matched_product||(a.product_name&&a.product_name!=="unknown"?a.product_name:"Your item");
+ const ev=EV_LABEL[e.evidence_tier]+(e.prior_products?` · ${e.prior_products} products`:"")+" · "+e.sources.filter(k=>SRC[k]).map(k=>cite(k,k==="plasticlist"?"PlasticList":k==="efsa"?"EFSA 2019":null)).join(" · ");
+ const band=e.band?`<div class="bar tb-${e.tier}"><div class="band" style="left:${e.band[0]}%;width:${Math.max(4,e.band[1]-e.band[0])}%"></div>${e.point!=null&&e.percentile!=null?`<div class="dot" style="left:calc(${e.percentile}% - 9px)"></div>`:""}</div><div class="scale"><span>Lower</span><span>Typical</span><span>Higher</span></div>`:"";
+ const rl=e.reference_level;
+ const ref=rl?`<b>${rl.min_pct_tdi}% to ${rl.max_pct_tdi}%</b> of the EU tolerable daily intake per serving (DEHP-equivalents, 70 kg adult; ${cite("efsa","EFSA 2019")}, computed by ${cite("plasticlist","PlasticList")}).`:`Not shown: ${e.reference_reason||"no reference comparison available"}.`;
+ const sw=e.swap?`<b>Swap:</b> ${e.swap.product}. <b>Typically about ${Math.round(e.swap.ratio*10)/10}x lower</b> (lab medians, ${cite("plasticlist","PlasticList")})${e.swap.ranges_overlap?", but the sample ranges overlap":""}. <span class="badge">Swap Impact: lab-backed</span>`
+  :e.evidence_tier==="T5"?`<b>One question would help most:</b> what is it packaged in? <div class="quick"><button onclick="answerUnknown('plastic')">Plastic</button><button onclick="answerUnknown('can')">Can</button><button onclick="answerUnknown('glass')">Glass / none</button></div>`
+  :`No lab-backed Swap for this yet. Adding the brand could unlock one.`;
+ const miss=(e.missing||[]).map(k=>MISSING_LABEL[k]).filter(Boolean);
+ $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>
+ ${S.photo?`<img src="${S.photo}" alt="" style="max-height:120px;border-radius:10px">`:""}
+ <div class="food" style="font-size:19px">${name} <span class="sample">LIVE</span></div>
+ <div class="chips">${res.chips.map(c=>`<button class="chip edit ${c[1]?"inf":""}" ${c[2]==="heated"?`onclick="toggleLiveHeat()"`:""} title="${c[1]?"Inferred: tap to correct":"Tap to correct"}">${c[0]}</button>`).join("")}<span class="chip">📍 ${S.location}</span></div>
+ <div class="big c-${e.tier}">${TIER_WORD[e.tier]}</div>
+ <div class="badge">${ev}</div>
+ ${band}
+ <div class="ref">📏 <b>Reference Level:</b> ${ref}</div>
+ <div class="swap">${sw}</div>
+ ${miss.length?`<div class="miss">Would sharpen this: ${miss.join(" · ")}</div>`:""}
+ <ul class="why"><li>Relative to ${e.evidence_tier==="T1"?"the other products PlasticList tested":"similar products PlasticList tested"}, not a safety verdict</li>${e.percentile!=null?`<li>Around the ${e.percentile}th percentile of tested products (phthalates, DEHP-equivalents)</li>`:""}</ul>
+ <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="ghostbtn" onclick="openCheck()">Check another</button><button class="cta" onclick="logLive()">Done</button></div>`;
+}
+async function toggleLiveHeat(){
+ const a={...S.lastRes.attrs};a.heated=a.heated==="hot"?"cold":"hot";
+ if(a.heated==="cold")a.product_name=(a.product_name||"").replace(/\b(warmed|warm|heated|hot)\b/gi,"").trim();
+ $("#checkModal").innerHTML=`<p><span class="spinner"></span>Re-estimating…</p>`;
+ const res=await postCheck({attrs:a});if(res)renderLive(res);
+}
+function logLive(){
+ const e=S.lastRes.estimate,a=S.lastRes.attrs;
+ const label=(e.matched_product||a.product_name||"Your item")+" (just now)";
+ S.history.unshift({k:"live",res:S.lastRes,n:1,label,tier:e.tier,ev:EV_LABEL[e.evidence_tier].replace(/^[^A-Za-z]+/,""),swap:e.swap?`${e.swap.product}: about ${Math.round(e.swap.ratio)}x lower`:"see result"});
+ closeCheck();
 }
 function showResult(key,attrsLive){
  const e=EST[key];
@@ -235,7 +279,7 @@ function showResult(key,attrsLive){
  <div class="chips">${attrs.map(a=>`<button class="chip edit ${a[1]?"inf":""}" ${a[2]==="heated"?`onclick="toggleHeat('${key}')"`:''} title="${a[1]?"Inferred: tap to correct":"Tap to correct"}">${a[0]}</button>`).join("")}<span class="chip">📍 ${S.location}</span></div>
  <div class="big c-${e.tier}">${e.word}</div>
  <div class="badge">${e.ev}</div>
- <div class="bar"><div class="band" style="left:${e.band[0]}%;width:${e.band[1]}%"></div>${e.dot!=null?`<div class="dot" style="left:${e.dot}%"></div>`:''}</div>
+ <div class="bar tb-${e.tier}"><div class="band" style="left:${e.band[0]}%;width:${e.band[1]}%"></div>${e.dot!=null?`<div class="dot" style="left:${e.dot}%"></div>`:''}</div>
  <div class="scale"><span>Lower</span><span>Typical</span><span>Higher</span></div>
  <div class="ref">📏 <b>Reference Level:</b> ${e.ref}</div>
  <div class="swap">${e.swap}</div>

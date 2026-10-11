@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coming-soon Layout Options</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#8a8a85;--line:#e2e0da;--ghost:#efeee9;--hi:#c2410c;--med:#b45309;--lo:#15803d;--accent:#1f4b99}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,system-ui,sans-serif;padding:24px 16px}
+h1{font-size:20px;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));gap:24px}
+@media (max-width:600px){.grid{grid-template-columns:1fr}}
+.opt h2{font-size:15px;margin:0 0 2px}
+.opt p.why{margin:0 0 10px;color:var(--mute);font-size:12.5px}
+.frame{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;min-height:440px;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.brand{font-weight:700}
+.loc{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+.cta{background:var(--accent);color:#fff;border-radius:8px;padding:8px 12px;font-weight:600;font-size:13px;display:inline-block}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px}
+.card h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--line);gap:8px}
+.row:first-of-type{border-top:0}
+.food{font-weight:600}
+.meta{font-size:11.5px;color:var(--mute)}
+.tier{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;color:#fff;white-space:nowrap}
+.hi{background:var(--hi)}.med{background:var(--med)}.lo{background:var(--lo)}
+.swap{font-size:11.5px;color:var(--accent)}
+.ghost{background:var(--ghost);border:1px dashed #cfcdc5;border-radius:10px;padding:10px;color:var(--mute);font-size:12px}
+.ghost b{display:block;color:#6d6c67;font-size:12.5px}
+.soon{font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.g6{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.g6 .card{grid-column:span 2;grid-row:span 2}
+.side{display:grid;grid-template-columns:120px 1fr;gap:12px}
+.nav div{padding:7px 8px;border-radius:6px;font-size:12.5px}
+.nav .on{background:var(--ghost);font-weight:600}
+.nav .off{color:#b5b4ae}
+.agent{position:absolute;right:14px;bottom:14px;background:var(--ink);color:#fff;border-radius:99px;padding:8px 14px;font-size:12px;font-weight:600}
+.sample{position:absolute;top:8px;right:10px;font-size:10px;color:var(--mute);letter-spacing:.08em}
+.ov{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{font-size:20px;font-weight:700}
+</style>
+</head>
+<body>
+<h1>Where do the Coming-soon Modules go?</h1>
+<p class="sub">Four layouts with the same content. Exposure is the live module and the others are greyed out. All data is SAMPLE.</p>
+<div class="grid">
+
+<section class="opt">
+<h2>A. Compact roadmap strip (recommended)</h2>
+<p class="why">Exposure owns the page, with the vision in one slim row (Jacquie D#29, B4).</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="top"><span class="brand">Health OS</span><span class="loc">📍 New York</span></div>
+<div style="margin-bottom:10px"><span class="cta">+ Check a food</span></div>
+<div class="card"><h3>Top contributors this week</h3>
+<div class="row"><div><div class="food">Starbucks Spinach Feta Wrap, warmed</div><div class="meta">3× this week · T1 lab-measured</div><div class="swap">Swap: unwarmed, or eat it out of the sleeve →</div></div><span class="tier hi">High</span></div>
+<div class="row"><div><div class="food">Nitro Cold Brew</div><div class="meta">5× · T2 similar products</div><div class="swap">Swap: drip coffee in a ceramic mug →</div></div><span class="tier med">Med</span></div>
+<div class="row"><div><div class="food">Canned chickpeas</div><div class="meta">2× · T3 category</div><div class="swap">Swap: dried or jarred →</div></div><span class="tier med">Med</span></div>
+<div class="meta" style="margin-top:6px">2 checks unrated (not enough data)</div>
+</div>
+<div class="strip">
+<div class="ghost"><span class="soon">Soon</span><b>Bloodwork</b>Biomarker trends</div>
+<div class="ghost"><span class="soon">Soon</span><b>Sleep</b>Recovery and debt</div>
+<div class="ghost"><span class="soon">Soon</span><b>Gym & Nutrition</b>Training and macros</div>
+<div class="ghost"><span class="soon">Soon</span><b>Overview</b>All modules in one view</div>
+</div>
+<span class="agent">✦ Ask Health OS</span>
+</div>
+</section>
+
+<section class="opt">
+<h2>B. Full grid, equal tiles</h2>
+<p class="why">Reads strongly as an OS, but the four dead tiles compete with the live one.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="top"><span class="brand">Health OS</span><span class="loc">📍 New York</span></div>
+<div class="g6">
+<div class="card"><h3>Exposure · top contributors</h3>
+<div class="row"><div><div class="food">Spinach Feta Wrap</div><div class="swap">Swap →</div></div><span class="tier hi">High</span></div>
+<div class="row"><div><div class="food">Nitro Cold Brew</div><div class="swap">Swap →</div></div><span class="tier med">Med</span></div>
+<div style="margin-top:8px"><span class="cta">+ Check a food</span></div>
+</div>
+<div class="ghost" style="min-height:110px"><span class="soon">Soon</span><b>Bloodwork</b></div>
+<div class="ghost"><span class="soon">Soon</span><b>Sleep</b></div>
+<div class="ghost" style="min-height:110px"><span class="soon">Soon</span><b>Gym & Nutrition</b></div>
+<div class="ghost"><span class="soon">Soon</span><b>Overview</b></div>
+<div class="ghost" style="visibility:hidden"></div>
+</div>
+<span class="agent">✦ Ask Health OS</span>
+</div>
+</section>
+
+<section class="opt">
+<h2>C. Sidebar nav only</h2>
+<p class="why">The cleanest page, but the vision barely shows in a screenshot.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="side">
+<div class="nav">
+<div class="brand" style="padding:0 8px 10px">Health OS</div>
+<div class="on">Exposure</div>
+<div class="off">Bloodwork · soon</div>
+<div class="off">Sleep · soon</div>
+<div class="off">Gym & Nutrition · soon</div>
+<div class="off">Overview · soon</div>
+</div>
+<div>
+<div class="top"><span class="cta">+ Check a food</span><span class="loc">📍 New York</span></div>
+<div class="card"><h3>Top contributors this week</h3>
+<div class="row"><div><div class="food">Spinach Feta Wrap, warmed</div><div class="meta">3× · T1</div><div class="swap">Swap →</div></div><span class="tier hi">High</span></div>
+<div class="row"><div><div class="food">Nitro Cold Brew</div><div class="meta">5× · T2</div><div class="swap">Swap →</div></div><span class="tier med">Med</span></div>
+<div class="row"><div><div class="food">Canned chickpeas</div><div class="meta">2× · T3</div><div class="swap">Swap →</div></div><span class="tier med">Med</span></div>
+</div>
+</div>
+</div>
+<span class="agent">✦ Ask Health OS</span>
+</div>
+</section>
+
+<section class="opt">
+<h2>D. Overview as home</h2>
+<p class="why">The most holistic, but you'd be designing a fake Overview, and Exposure is one click deeper.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="top"><span class="brand">Health OS · Overview</span><span class="loc">📍 New York</span></div>
+<div class="ov">
+<div class="card"><h3>Exposure</h3><div class="food">Top source: Spinach Feta Wrap</div><div class="swap">Swap → · See all</div><div style="margin-top:8px"><span class="cta">+ Check a food</span></div></div>
+<div class="ghost"><span class="soon">Soon</span><b>Bloodwork</b><span class="metric">--</span> markers out of range</div>
+<div class="ghost"><span class="soon">Soon</span><b>Sleep</b><span class="metric">--</span> h avg</div>
+<div class="ghost"><span class="soon">Soon</span><b>Gym & Nutrition</b><span class="metric">--</span> kcal / protein</div>
+</div>
+<div class="ghost" style="margin-top:8px"><b>Cross-module insight</b>e.g. "Poor sleep weeks match more takeaway, and that takeaway is your top exposure source"</div>
+<span class="agent">✦ Ask Health OS</span>
+</div>
+</section>
+
+</div>
+</body>
+</html>

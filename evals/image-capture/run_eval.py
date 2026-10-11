@@ -1,7 +1,7 @@
 """Run a Claude vision model over the labelled image sets and write predictions.
 
 Usage: .venv/bin/python evals/image-capture/run_eval.py [--model claude-opus-5-5] [--effort medium] [--sets off,snaps,machines] [--limit N]
-Reads ANTHROPIC_API_KEY from the repo-root .env (git-ignored).
+Reads ANTHROPIC_API_KEY from $HM_ENV_FILE, the repo-root .env, or AIOS/secrets/hackathon.env (all git-ignored).
 """
 import argparse, base64, json, mimetypes, os, pathlib, time
 from concurrent.futures import ThreadPoolExecutor
@@ -50,8 +50,9 @@ Report only what the photo shows or what printed text on it states. Use "unknown
 
 
 def load_env():
-    env = REPO / ".env"
-    if env.exists():
+    for env in [pathlib.Path(os.environ.get("HM_ENV_FILE", REPO / ".env")), REPO.parents[1] / "secrets" / "hackathon.env"]:
+        if not env.exists():
+            continue
         for line in env.read_text().splitlines():
             if "=" in line and not line.startswith("#"):
                 k, v = line.split("=", 1)

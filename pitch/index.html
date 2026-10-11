@@ -75,25 +75,13 @@ a{color:inherit}
  <div class="src" style="margin-top:10px">Sources: <a href="https://www.plasticlist.org/report">PlasticList</a> (DEHP-equivalents; 169 of 236 products had at least one sample above the limit of quantification) · <a href="https://doi.org/10.3389/fchem.2018.00407">Mason et al. 2018</a> (particles &gt;100 µm) · Philip's own story (self-interview; the only user research so far)</div>
 </section>
 
-<section class="slide" aria-label="How it works">
- <div class="kicker">How it works, and how far to trust it</div>
- <h2 style="margin-bottom:.35em">Honest by design: every estimate carries its evidence.</h2>
- <div class="flow">
-  <div class="step"><b>1. See</b>Claude Opus 5.5 reads the photo: brand, packaging, heated or not. Every field is an editable chip.</div><div class="arrow">→</div>
-  <div class="step"><b>2. Match</b>We match it against 618 lab samples from 236 products, falling back to similar products, then the category.</div><div class="arrow">→</div>
-  <div class="step"><b>3. Estimate</b>Tier and uncertainty band, against reference levels from EFSA, EPA and NYC DEP.<div class="tiers"><span>T1 lab</span><span>T2 similar</span><span>T3 category</span><span>T5 unknown</span></div></div><div class="arrow">→</div>
-  <div class="step"><b>4. Swap</b>A lower option, with its impact and evidence, e.g. warmed wrap to egg bites: about 4.5x lower.</div>
- </div>
- <div class="two">
-  <div class="col"><h3>What we checked</h3><ul>
-   <li>Photo reading: packaging right on 17/17 product photos and 23/26 real-world snaps (after fixing wrong labels). No confident wrong packaging calls.</li>
-   <li>About 5 seconds and $0.03 per photo</li>
-   <li>21 automated tests on the estimate engine</li></ul></div>
-  <div class="col"><h3>What we don't know yet</h3><ul>
-   <li>A "higher" food can still be under 1% of the EU tolerable daily intake. We say so on the card.</li>
-   <li>No lab data for NYC tap water, and microplastics have no official reference level</li>
-   <li>Next: run our own lab studies, then add bloodwork to see if swaps change what's in your body</li></ul></div>
- </div>
+<section class="slide" aria-label="Live demo">
+ <div class="ring" aria-hidden="true"></div>
+ <div class="kicker">Live demo</div>
+ <h1 style="font-size:clamp(30px,5vw,68px)">Let's try it.</h1>
+ <p class="lead">A Starbucks wrap, then the hotel tap water.</p>
+ <p style="margin-top:1.4em"><a href="http://localhost:8780" style="display:inline-block;background:var(--accent);color:var(--card);text-decoration:none;border-radius:12px;padding:.7em 1.2em;font-weight:700;font-size:clamp(14px,1.6vw,20px)">Open the live app →</a></p>
+ <div class="foot"><span>AI Engineer NYC 2026</span><span>Built with Claude Opus 5.5 + Claude Code</span></div>
 </section>
 
 </div>

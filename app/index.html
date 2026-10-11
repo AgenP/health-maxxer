@@ -81,6 +81,7 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes s{to{transform:rotate(360deg)}}
 .sample{font-size:10px;letter-spacing:.08em;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.cite{color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;white-space:nowrap}
 .src{font-size:11.5px;color:var(--mute);margin-top:10px}
 .edit-pop{display:flex;gap:6px;flex-wrap:wrap;margin:-2px 0 10px}
 @media (max-width:760px){
@@ -124,20 +125,31 @@ input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10
 
 <script>
 const LOCATIONS=["New York, US","San Francisco, US","London, UK","Aberdeen, UK","Paris, FR","Other"];
+const SRC={
+ plasticlist:["PlasticList lab results","https://www.plasticlist.org/report"],
+ efsa:["EFSA 2019 phthalates opinion","https://doi.org/10.2903/j.efsa.2019.5838"],
+ dep:["NYC DEP 2025 water quality report","https://www.nyc.gov/assets/dep/downloads/pdf/water/drinking-water/drinking-water-supply-quality-report/2025-drinking-water-supply-quality-report.pdf"],
+ epa:["EPA PFAS drinking water rule","https://www.epa.gov/sdwa/and-polyfluoroalkyl-substances-pfas"],
+ mason:["Mason et al. 2018","https://doi.org/10.3389/fchem.2018.00407"],
+ antimony:["Water SA antimony study","https://watersa.net/article/view/22067"],
+ eu:["EU Drinking Water Directive 2020/2184","https://eur-lex.europa.eu/eli/dir/2020/2184/oj"],
+ coolers:["Dispenser contamination study","https://pmc.ncbi.nlm.nih.gov/articles/PMC8308914/"]
+};
+const cite=(k,label)=>`<a class="cite" href="${SRC[k][1]}" target="_blank" rel="noopener">${label||SRC[k][0]}↗</a>`;
 const S={state:"normal",location:"New York, US",photo:null,photoData:null,text:"",history:[],live:false};
 
 // SAMPLE estimates. Food figures: PlasticList DEHP-equivalents (ng/g, %EFSA TDI per serving, 70 kg). Water: docs/water-evidence.md.
 const EST={
  wrap:{kind:"food",name:"Spinach Feta Wrap, warmed",attrs:[["Starbucks",0],["Paper sleeve + film",1],["Heated",0,"heated"],["Prepared meal",0]],
-  tier:"hi",word:"Higher than most foods",ev:"🧪 Lab-measured · T1 · 3 samples",band:[48,44],dot:72,
-  ref:"<b>0.1% to 0.7%</b> of the EU tolerable daily intake (EFSA, DEHP-equivalents) per serving. The US EPA has set no reference dose for this group.",
-  swap:"<b>Swap:</b> Bacon Gruyere Egg Bites. <b>Typically about 4x lower</b> (lab medians 17 vs 76 ng/g), but the sample ranges overlap. <span class='badge'>Swap Impact: lab-backed</span>",
-  why:["Heated food in film packaging tends to pick up more phthalates","Relative risk compared with other foods, not a safety verdict"],miss:null},
+  tier:"hi",word:"Higher than most foods",ev:`🧪 Lab-measured · T1 · 3 samples · ${cite("plasticlist","PlasticList")}`,band:[48,44],dot:72,
+  ref:`<b>0.1% to 0.7%</b> of the EU tolerable daily intake per serving (DEHP-equivalents, 70 kg adult; ${cite("efsa","EFSA 2019")}, computed by ${cite("plasticlist","PlasticList")}). The US EPA has set no reference dose for this group.`,
+  swap:`<b>Swap:</b> Bacon Gruyere Egg Bites. <b>Typically about 4x lower</b> (lab medians 17 vs 76 ng/g, ${cite("plasticlist","PlasticList")}), but the sample ranges overlap. <span class='badge'>Swap Impact: lab-backed</span>`,
+  why:["Assumption in our model: heat raises migration from packaging (not measured separately here)","Relative risk compared with other foods, not a safety verdict"],miss:null},
  wrapCold:{kind:"food",name:"Spinach Feta Wrap, not heated",attrs:[["Starbucks",0],["Paper sleeve + film",1],["Not heated",0,"heated"],["Prepared meal",0]],
   tier:"med",word:"Probably typical",ev:"Inferred from category · T3",band:[25,50],dot:null,
-  ref:"No lab sample of the unheated wrap. Heated samples were <b>0.1% to 0.7%</b> of the EU tolerable daily intake (EFSA).",
+  ref:`No lab sample of the unheated wrap. Heated samples were <b>0.1% to 0.7%</b> of the EU tolerable daily intake (${cite("efsa","EFSA 2019")}; ${cite("plasticlist","PlasticList")}).`,
   swap:"<b>Swap:</b> eating it unheated is likely lower than heated. <span class='badge'>Swap Impact: inferred (direction only)</span>",
-  why:["Heat raises migration from packaging (migration modelling)","We only have lab data for the heated version"],miss:"Would sharpen this: a lab test of the unheated wrap (not in our data yet)"},
+  why:["Assumption in our model: heat raises migration from packaging","We only have lab data for the heated version"],miss:"Would sharpen this: a lab test of the unheated wrap (not in our data yet)"},
  unknown:{kind:"food",name:"Unrecognised item",attrs:[["Unknown packaging",1],["Unknown category",1]],
   tier:"unk",word:"We can't rate this yet",ev:"Global prior · T5",band:[5,90],dot:null,
   ref:"No Reference Level comparison without knowing what it is.",
@@ -167,7 +179,7 @@ function renderDash(){
  ${rows.map((r,i)=>`<div class="row click" role="button" tabindex="0" onclick="openFromRow('${r.k}')" onkeydown="if(event.key==='Enter')openFromRow('${r.k}')"><div><div class="food">${i+1}. ${r.label}</div><div class="meta">${r.n}× this week · ${r.ev}</div><div class="swapl">Swap: ${r.swap} →</div></div><span class="tier ${tierClass(r.tier)}">${tierWord(r.tier)}</span></div>`).join("")}
  <div class="meta" style="margin-top:8px">${unrated} checks unrated (not enough data). There's no single exposure score on purpose: tiers don't add up.</div></div>`
  :`<div class="card empty"><div style="font-size:34px">🥤</div><h2 style="color:var(--ink);margin:8px 0 4px">Nothing checked yet</h2><p>Snap or type what you're about to eat or drink. Each check builds your weekly picture.</p><button class="cta" onclick="openCheck()">Check your first food</button></div>`}
- <p class="meta" style="margin-top:16px">Estimates are relative and come with an evidence label. Lab data: PlasticList (US). Water: NYC DEP 2025 report, Mason et al. 2018.</p>`;
+ <p class="meta" style="margin-top:16px">Estimates are relative and come with an evidence label. Lab data: ${cite('plasticlist','PlasticList')} (US). Water: ${cite('dep','NYC DEP 2025')}, ${cite('mason','Mason 2018')}.</p>`;
  $("#locSel").onchange=e=>{S.location=e.target.value.replace("📍 ","")};
 }
 
@@ -237,13 +249,13 @@ function renderWater(e,attrsLive){
  <div class="food" style="font-size:19px">${e.name} <span class="sample">SAMPLE</span></div>
  <div class="chips">${(attrsLive||e.attrs).map(a=>`<button class="chip edit ${a[1]?"inf":""}">${a[0]}</button>`).join("")}</div>
  <div class="cmp">
-  <div class="col best"><h4>Tap, cold, run 30s+</h4><div class="t c-lo">Lower</div><div class="badge">Official report · T3</div><p>No lead in the city's water mains. The risk is old building pipes.</p><div class="ref" style="font-size:12px">📏 Lead: 10 vs action level 15 µg/L (90th percentile of homes, NYC DEP)<br>PFOA: at most 2.7 vs EPA limit 4.0 ng/L</div></div>
-  <div class="col"><h4>Bottled (PET)</h4><div class="t c-med">Higher</div><div class="badge">Peer-reviewed · T3</div><p>About 2x the microplastic particles of tap.</p><div class="ref" style="font-size:12px">📏 Microplastics: no reference level exists<br>Antimony: under EU limit unless stored hot</div></div>
-  <div class="col"><h4>Water machine</h4><div class="t c-unk">Unknown</div><div class="badge">Little data · T5</div><p>Depends on the filter and how well it's cleaned.</p><div class="ref" style="font-size:12px">📏 No reference data for this machine. Snap it to read its filter type.</div></div>
+  <div class="col best"><h4>Tap, cold, run 30s+</h4><div class="t c-lo">Lower</div><div class="badge">Official report · T3</div><p>No lead in the city's water mains. The risk is old building pipes. ${cite('dep','NYC DEP')}</p><div class="ref" style="font-size:12px">📏 Lead: 10 vs action level 15 µg/L (90th percentile of homes, ${cite('dep','NYC DEP 2025')})<br>PFOA: at most 2.7 (${cite('dep','NYC DEP')}) vs limit 4.0 ng/L (${cite('epa','EPA')})</div></div>
+  <div class="col"><h4>Bottled (PET)</h4><div class="t c-med">Higher</div><div class="badge">Peer-reviewed · T3</div><p>About 2x the microplastic particles of tap (particles over 100 µm). ${cite('mason','Mason 2018')}</p><div class="ref" style="font-size:12px">📏 Microplastics: no reference level exists<br>Antimony: under the ${cite('eu','EU limit')} unless stored hot (${cite('antimony','study')})</div></div>
+  <div class="col"><h4>Water machine</h4><div class="t c-unk">Unknown</div><div class="badge">Little data · T5</div><p>Depends on the filter and how well it's cleaned. Poorly kept dispensers can grow microbes (${cite('coolers','study')}).</p><div class="ref" style="font-size:12px">📏 No reference data for this machine. Snap it to read its filter type.</div></div>
  </div>
- <div class="swap"><b>Do this:</b> run the cold tap for 30 seconds to 2 minutes, then fill a glass or steel bottle. <span class="badge">Swap Impact: peer-reviewed, size cut-offs vary</span></div>
+ <div class="swap"><b>Do this:</b> run the cold tap for 30 seconds to 2 minutes, then fill a glass or steel bottle. <span class="badge">Swap Impact: peer-reviewed (${cite("mason","Mason 2018")}), size cut-offs vary</span></div>
  <div class="miss">Would sharpen this: building age or pipe type · a lab test of this tap (not in our data yet; our lab dataset has SF taps only)</div>
- <div class="src">Sources: NYC DEP 2025 Drinking Water Supply and Quality Report; Mason et al. 2018 (Frontiers in Chemistry).</div>
+ <div class="src">Sources: ${cite("dep")} · ${cite("mason")} · ${cite("epa")} · ${cite("antimony")} · ${cite("coolers")}</div>
  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="ghostbtn" onclick="openCheck()">Check another</button><button class="cta" onclick="closeCheck()">Done</button></div>`;
 }
 function logAndClose(key){
@@ -255,9 +267,9 @@ function logAndClose(key){
 }
 
 const QA={
- "What's my biggest source this week?":"Your warmed Starbucks Spinach Feta Wrap (3 times this week). It's lab-measured (T1) and higher than most foods, though each serving is under 1% of the EU tolerable daily intake. Easiest swap: the egg bites, typically about 4x lower.",
+ "What's my biggest source this week?":"Your warmed Starbucks Spinach Feta Wrap (3 times this week). It's lab-measured (T1) and higher than most foods, though each serving is under 1% of the EU tolerable daily intake. Easiest swap: the egg bites, typically about 4x lower. Sources: "+cite('plasticlist','PlasticList')+", "+cite('efsa','EFSA 2019')+".",
  "Plan a lower-exposure lunch near me":"Near you in New York: pick something served on a plate or in paper rather than heated in plastic film, and drink cold tap water in a glass. That removes the two biggest patterns in your week: heated film packaging and bottled water.",
- "Is the tap water in my hotel OK?":"New York's mains carry no lead; the risk is the building's pipes. Run the cold tap for 30 seconds to 2 minutes before filling. Bottled water typically carries about 2x the microplastic particles of tap."
+ "Is the tap water in my hotel OK?":"New York's mains carry no lead; the risk is the building's pipes. Run the cold tap for 30 seconds to 2 minutes before filling. Bottled water typically carries about 2x the microplastic particles of tap. Sources: "+cite('dep','NYC DEP 2025')+", "+cite('mason','Mason 2018')+"."
 };
 function openAgent(){
  $("#agentModal").innerHTML=`<button class="x" onclick="$('#agentScrim').classList.remove('open')" aria-label="Close">×</button>

@@ -10,6 +10,8 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 4 | Coming-soon Modules layout | **C. Sidebar nav**: modules listed in a left nav, the others greyed out | Options: `wireframes/q-coming-soon-layout.html`. Trade-off accepted: the vision is less visible in screenshots |
 | 5 | Food Check confirmation | Result first; Food Attributes shown as editable chips on the result, and editing one re-runs the estimate | Chips double as the trust signal (A#41) |
 | 6 | Result card | **A. Tier word + range bar**, plus an Evidence Tier badge; no point dot below T2 | Options: `wireframes/q-result-card.html` |
+| 7 | Device | Responsive web, desktop-first demo; at phone width the sidebar collapses to a bottom tab bar and "Check a food" opens the camera | |
+| 8 | Agent stub | Scripted Q&A modal: 2 to 3 suggested prompts with pre-written answers from the sample data; anything else gets "coming soon" | |
 
 ## Jacquie conflicts acknowledged
 

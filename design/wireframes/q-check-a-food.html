@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check a Food Options</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#8a8a85;--line:#e2e0da;--ghost:#efeee9;--accent:#1f4b99}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,system-ui,sans-serif;padding:24px 16px}
+h1{font-size:20px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:24px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+.opt h2{font-size:15px;margin:0 0 2px}.why{margin:0 0 10px;color:var(--mute);font-size:12.5px}
+.frame{background:var(--card);border:1px solid var(--line);border-radius:12px;position:relative;height:420px;overflow:hidden;display:grid;grid-template-columns:110px 1fr}
+.nav{border-right:1px solid var(--line);padding:12px 8px;font-size:12px}
+.nav div{padding:6px;border-radius:6px}.nav .on{background:var(--ghost);font-weight:600}.nav .off{color:#b5b4ae}
+.main{padding:14px;position:relative}
+.dim{opacity:.35}
+.scrim{position:absolute;inset:0;background:rgba(29,29,27,.35)}
+.modal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:78%;background:#fff;border-radius:12px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.drop{border:2px dashed #cfcdc5;border-radius:10px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mute);font-size:12.5px;gap:4px}
+.or{text-align:center;color:var(--mute);font-size:11px;margin:8px 0}
+.input{border:1px solid var(--line);border-radius:8px;padding:9px;color:var(--mute);font-size:13px}
+.help{font-size:11px;color:var(--mute);margin-top:4px}
+.loc{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:12px;margin-top:10px}
+.cta{background:var(--accent);color:#fff;border-radius:8px;padding:9px 12px;font-weight:600;font-size:13px;text-align:center;margin-top:12px}
+.card{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;color:var(--mute)}
+.sample{position:absolute;top:8px;right:10px;font-size:10px;color:var(--mute);letter-spacing:.08em;z-index:3}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:100%}
+.hist div{padding:6px 0;border-top:1px solid var(--line);font-size:12px}
+</style>
+</head>
+<body>
+<h1>What does "Check a food" open?</h1>
+<p class="sub">The same inputs in both: a photo or text box (either works, both is best) and a Location chip. Each input says how it helps (C#83). All data is SAMPLE.</p>
+<div class="grid">
+
+<section class="opt">
+<h2>A. Modal over the dashboard (recommended)</h2>
+<p class="why">You stay in context: submit, and the result replaces the modal content, then "Done" returns you to an updated dashboard. One less page to build.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="nav"><div style="font-weight:700;padding-bottom:8px">Health OS</div><div class="on">Exposure</div><div class="off">Bloodwork</div><div class="off">Sleep</div><div class="off">Gym & Nutrition</div><div class="off">Overview</div></div>
+<div class="main"><div class="dim"><div class="card">Top contributors this week…</div></div>
+<div class="scrim"></div>
+<div class="modal">
+<div style="font-weight:700;margin-bottom:8px">Check a food</div>
+<div class="drop">📷 Drop a photo or take one<span style="font-size:11px">Photos show the packaging and whether it's hot, which sharpens the estimate</span></div>
+<div class="or">and/or</div>
+<div class="input">What is it? e.g. "Starbucks spinach wrap"</div>
+<div class="help">Brand and product name can unlock lab-tested results</div>
+<span class="loc">📍 New York ▾</span>
+<div class="cta">Check it</div>
+</div></div>
+</div>
+</section>
+
+<section class="opt">
+<h2>B. Dedicated Check page</h2>
+<p class="why">Inputs on the left and recent checks on the right. More room for the result and history, but it's another page, and the dashboard update happens off-screen.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="nav"><div style="font-weight:700;padding-bottom:8px">Health OS</div><div class="on">Exposure</div><div style="padding-left:14px" class="on">› Check</div><div class="off">Bloodwork</div><div class="off">Sleep</div><div class="off">Gym & Nutrition</div><div class="off">Overview</div></div>
+<div class="main"><div class="split">
+<div>
+<div style="font-weight:700;margin-bottom:8px">Check a food</div>
+<div class="drop">📷 Drop a photo<span style="font-size:11px">Shows packaging + heat</span></div>
+<div class="or">and/or</div>
+<div class="input">What is it?</div>
+<span class="loc">📍 New York ▾</span>
+<div class="cta">Check it</div>
+</div>
+<div class="hist"><div style="font-weight:600;border:0">Recent checks</div><div>Nitro Cold Brew · Med</div><div>Spinach Feta Wrap · High</div><div>Canned chickpeas · Med</div></div>
+</div></div>
+</div>
+</section>
+
+</div>
+</body>
+</html>

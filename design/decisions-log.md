@@ -14,9 +14,12 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 8 | Agent stub | Scripted Q&A modal: 2 to 3 suggested prompts with pre-written answers from the sample data; anything else gets "coming soon" | |
 | 9 | Demo tree | Primary: seeded dashboard, photo of a warmed wrap (T1 High), edit the Heated chip so the estimate re-runs, dashboard updates, Ask Health OS, end slide (roadmap + validation). Side path: unknown product catch-all (T3, wide band) | B4: one story, one side path |
 | 10 | System states wireframed | Empty dashboard, unknown food (T5), photo unreadable or not food, offline/API down (cached data + banner) | D#40 |
+| 11 | Hallway test | **No.** Self only; all needs labelled as assumptions in the deck | Accepted conflict with D#10 and D#55 |
+| 12 | Check a food entry | **A. Modal over the dashboard**; the result renders in the modal and "Done" returns to the updated dashboard | Options: `wireframes/q-check-a-food.html` |
 
 ## Jacquie conflicts acknowledged
 
 - Self-only research (D#55, B A28): mitigated by labelling the needs as assumptions.
 - Greyed modules vs focus (D#29, B4): resolved by the sidebar nav choice.
+- Hallway usability test (D#10): declined; self-only constraint kept.
 - Flows before screens (C#31): flows are mapped before the wireframes.

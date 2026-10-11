@@ -17,3 +17,8 @@ Stories surfaced: (1) hotel bottled water, (2) hackathon plastic bottle then met
 Observations: trigger was running out (bottles unavailable), not concern; social cue (someone else at the machine) revealed the option; searched for a vessel "instead of the plastic bottle I just used".
 
 Correction (Q3 attempt): interviewer assumed Philip was holding the empty bottle; he was not. Leading premise withdrawn.
+
+## Q3: what were you looking for / what next
+> "looking for a cup. Once done I came back to my computer which is where I am now"
+
+Observation: low-deliberation moment; once a non-plastic option existed, the switch was effortless and the question was closed (no further thought about the machine water itself, as far as reported).

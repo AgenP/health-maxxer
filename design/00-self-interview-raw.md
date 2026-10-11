@@ -37,3 +37,6 @@ Observations: the hotel-room tap is the real origin of the hotel story. Uncertai
 > "I went downstairs directly to the front desk"
 
 Observation: no lookup, no research step; the decision was immediate.
+
+## Q7: what was going through your mind at the tap
+> "uncertainty about quality"

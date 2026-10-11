@@ -48,6 +48,10 @@ _Avoid_: recommendation, alternative
 The foods that drove most of the person's exposure over a period, ranked by Exposure Estimate tier times frequency, each paired with a Swap. The headline of the Exposure Module; there is no aggregate exposure number.
 _Avoid_: weekly score, exposure index
 
+**Swap Impact**:
+How much a Swap is expected to reduce exposure, with its own evidence: lab-backed (both sides measured), inferred (direction from method, size uncertain), or unbacked (stated as a limitation, closable by running our own studies).
+_Avoid_: savings, reduction score, benefit
+
 **Location**:
 Where the person is buying or eating the food; used only as a fallback prior for origin. Distinct from Origin.
 _Avoid_: region, market

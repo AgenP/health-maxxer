@@ -16,6 +16,8 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 10 | System states wireframed | Empty dashboard, unknown food (T5), photo unreadable or not food, offline/API down (cached data + banner) | D#40 |
 | 11 | Hallway test | **No.** Self only; all needs labelled as assumptions in the deck | Accepted conflict with D#10 and D#55 |
 | 12 | Check a food entry | **A. Modal over the dashboard**; the result renders in the modal and "Done" returns to the updated dashboard | Options: `wireframes/q-check-a-food.html` |
+| 13 | Scope after self-interview | **Keep both food and water.** Water (tap vs bottled vs machine, Location-dependent) joins food as a first-class Food Check. Philip on the result-card wireframe: the Starbucks swap was "literally immediately valuable" and a reminder that food exposure can be minimised | Self-interview: `00-self-interview.md` |
+| 14 | Swap ROI | Every Swap shows its **Swap Impact** with an evidence label. Where no lab pair backs it, say so explicitly as a limitation and name the fix: run our own studies | Philip's concern: is the recommended action resource-backed? Also acknowledged: good science takes a lot of resources, so "run our own studies" is a roadmap item with real cost, not a quick fix |
 
 ## Jacquie conflicts acknowledged
 
@@ -23,3 +25,9 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 - Greyed modules vs focus (D#29, B4): resolved by the sidebar nav choice.
 - Hallway usability test (D#10): declined; self-only constraint kept.
 - Flows before screens (C#31): flows are mapped before the wireframes.
+
+## Swap Impact evidence check (PlasticList, DEHP-equivalents ng/g, 2026-10-11)
+
+- **Food, lab-backed:** Spinach Feta Wrap warmed, median 76 (22, 76, 149) vs Bacon Gruyere Egg Bites, median 17 (11, 17, 78). About 4.5x lower at the median, **but the ranges overlap**. Show it as "typically about 4x lower", not a guarantee. Per gram, not per serving.
+- **Water, phthalates: no difference measurable.** Every tap sample (unfiltered SF at 0 s and 30 s, Brita, Berkey, every vessel after 1 h) is below the limit of quantification. Bottled: 2 detections (Fiji 102, Mountain Valley 98) among otherwise non-detect samples. So "tap vs bottled" is **unbacked for phthalates** in this dataset, and the vessel and running-time comparisons are all non-detect too.
+- **Implication:** the water story needs other evidence. Candidates: microplastic particle counts in bottled water (literature, e.g. Qian 2024), and local tap quality (NYC annual drinking water quality report, EWG Tap Water Database). Not checked yet.

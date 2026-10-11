@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Result Card Options</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#8a8a85;--line:#e2e0da;--ghost:#efeee9;--hi:#c2410c;--med:#b45309;--lo:#15803d;--accent:#1f4b99}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,system-ui,sans-serif;padding:24px 16px}
+h1{font-size:20px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+.opt h2{font-size:15px;margin:0 0 2px}.why{margin:0 0 10px;color:var(--mute);font-size:12.5px}
+.frame{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;position:relative}
+.sample{position:absolute;top:8px;right:10px;font-size:10px;color:var(--mute);letter-spacing:.08em}
+.photo{height:90px;border-radius:8px;background:repeating-linear-gradient(45deg,#ecebe6,#ecebe6 8px,#f3f2ee 8px,#f3f2ee 16px);display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:12px;margin-bottom:10px}
+.name{font-weight:700;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:3px 9px;font-size:12px}
+.chip.inf{border-style:dashed}
+.chip::after{content:" ✎";color:var(--mute)}
+.big{font-size:26px;font-weight:800}
+.hi{color:var(--hi)}.med{color:var(--med)}.lo{color:var(--lo)}
+.badge{display:inline-block;font-size:11px;font-weight:600;background:var(--ghost);border-radius:6px;padding:3px 8px;margin-top:4px}
+.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#bbf7d0,#fde68a,#fdba74);margin:14px 0 4px}
+.band{position:absolute;top:-4px;height:20px;border:2px solid var(--ink);border-radius:6px;background:rgba(29,29,27,.08)}
+.dot{position:absolute;top:-3px;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid #fff}
+.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.swap{margin-top:12px;border:1px solid #c7d6f0;background:#f2f6fd;border-radius:8px;padding:10px;font-size:13px}
+.swap b{color:var(--accent)}
+.why-l{font-size:12px;color:var(--mute);margin-top:10px}
+.why-l li{margin:2px 0}
+.dots{display:flex;gap:4px;margin-top:6px}.dots span{width:22px;height:8px;border-radius:3px;background:var(--line)}.dots .f{background:var(--ink)}
+.miss{font-size:12px;color:var(--mute);margin-top:8px}
+</style>
+</head>
+<body>
+<h1>How does the result card show the tier and its uncertainty?</h1>
+<p class="sub">The same Food Check in all three: a warmed Starbucks Spinach Feta Wrap (lab replicates spread 7×). Dashed chips are inferred and the others are confirmed. All data is SAMPLE.</p>
+<div class="grid">
+
+<section class="opt">
+<h2>A. Tier word + range bar (recommended)</h2>
+<p class="why">A plain-language tier up top, with the band visible but secondary. Below T2 there's no dot, only the range.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="photo">photo</div>
+<div class="name">Spinach Feta Wrap, warmed</div>
+<div class="chips"><span class="chip">Starbucks</span><span class="chip inf">Paper sleeve + film</span><span class="chip">Heated</span><span class="chip inf">Moderate fat</span><span class="chip">📍 New York</span></div>
+<div class="big hi">Higher than most foods</div>
+<div class="badge">🧪 Lab-measured · T1 · 3 samples</div>
+<div class="bar"><div class="band" style="left:48%;width:44%"></div><div class="dot" style="left:72%"></div></div>
+<div class="scale"><span>Lower</span><span>Typical</span><span>Higher</span></div>
+<div class="swap"><b>Swap:</b> Egg bites, unwarmed. Typically lower, and the band doesn't overlap.</div>
+<ul class="why-l"><li>Why: heating in film packaging raises phthalate migration</li><li>Phthalates (DEHP-equivalents). Relative risk, not a safety verdict.</li></ul>
+</div>
+</section>
+
+<section class="opt">
+<h2>B. Percentile number + range</h2>
+<p class="why">Precise and comparable ("87th percentile"), but it reads as a confident number, which goes against our honesty stance.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="photo">photo</div>
+<div class="name">Spinach Feta Wrap, warmed</div>
+<div class="chips"><span class="chip">Starbucks</span><span class="chip inf">Paper sleeve + film</span><span class="chip">Heated</span><span class="chip">📍 New York</span></div>
+<div class="big hi">87th <span style="font-size:14px;font-weight:600">percentile</span></div>
+<div style="font-size:13px;color:var(--mute)">Likely range: 55th to 95th</div>
+<div class="badge">🧪 Lab-measured · T1</div>
+<div class="swap"><b>Swap:</b> Egg bites, unwarmed: 40th percentile</div>
+</div>
+</section>
+
+<section class="opt">
+<h2>C. Tier + evidence strength meter</h2>
+<p class="why">Leads with how much we know (filled bars = Evidence Tier) and lists the missing inputs. The most honest about gaps, but heavier to read.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="photo">photo</div>
+<div class="name">Iced matcha, local cafe</div>
+<div class="chips"><span class="chip inf">Plastic cup</span><span class="chip">Cold</span><span class="chip inf">Dairy</span><span class="chip">📍 New York</span></div>
+<div class="big med">Probably typical</div>
+<div style="font-size:12px;margin-top:6px">How much we know</div>
+<div class="dots"><span class="f"></span><span class="f"></span><span></span><span></span><span></span></div>
+<div class="badge">Inferred from category · T3</div>
+<div class="miss">Would sharpen this: brand · whether the milk was stored in plastic</div>
+<div class="swap"><b>Swap:</b> Ask for a ceramic mug. Lower for cold drinks in plastic cups.</div>
+</div>
+</section>
+
+</div>
+</body>
+</html>

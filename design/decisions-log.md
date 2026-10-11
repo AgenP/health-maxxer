@@ -9,6 +9,7 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 3 | Health OS Agent | Invokable from any screen (button/modal, later a wake word); **stubbed** this round | |
 | 4 | Coming-soon Modules layout | **C. Sidebar nav**: modules listed in a left nav, the others greyed out | Options: `wireframes/q-coming-soon-layout.html`. Trade-off accepted: the vision is less visible in screenshots |
 | 5 | Food Check confirmation | Result first; Food Attributes shown as editable chips on the result, and editing one re-runs the estimate | Chips double as the trust signal (A#41) |
+| 6 | Result card | **A. Tier word + range bar**, plus an Evidence Tier badge; no point dot below T2 | Options: `wireframes/q-result-card.html` |
 
 ## Jacquie conflicts acknowledged
 

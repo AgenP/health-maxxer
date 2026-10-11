@@ -20,6 +20,8 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 14 | Swap ROI | Every Swap shows its **Swap Impact** with an evidence label. Where no lab pair backs it, say so explicitly as a limitation and name the fix: run our own studies | Philip's concern: is the recommended action resource-backed? Also acknowledged: good science takes a lot of resources, so "run our own studies" is a roadmap item with real cost, not a quick fix |
 | 15 | Demo order (amends 9) | **Food first, then water.** Starbucks wrap swap (lab-backed Swap Impact) first, then the NYC hotel-tap story as the location/global angle | |
 | 16 | Catch-all side path (amends 9) | **Folded into the water story**: with no NYC tap samples in PlasticList, the water check lands at a lower Evidence Tier with a wider band and "would sharpen this" inputs, so it doubles as the honesty demo | B4 |
+| 17 | Water result | **A. Side-by-side options for here** (tap vs bottled vs machine), each with its own Evidence Tier, plus one "Do this" line | Options: `wireframes/q-water-result.html` |
+| 18 | Reference Level | Every result shows a **Reference Level** comparison with source and type (e.g. "0.7% of EFSA tolerable daily intake", "below EPA limit", "no reference level exists for microplastics"); never "safe" | Data: wrap 0.1 to 0.7% of EFSA TDI per serving (70 kg); egg bites 0.04 to 0.3%; EPA: no RfD. Relative tier is high, absolute share is small: the deck must say so |
 
 ## Jacquie conflicts acknowledged
 

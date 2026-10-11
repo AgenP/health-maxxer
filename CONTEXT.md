@@ -52,6 +52,10 @@ _Avoid_: weekly score, exposure index
 How much a Swap is expected to reduce exposure, with its own evidence: lab-backed (both sides measured), inferred (direction from method, size uncertain), or unbacked (stated as a limitation, closable by running our own studies).
 _Avoid_: savings, reduction score, benefit
 
+**Reference Level**:
+An external benchmark an Exposure Estimate is compared against, always named with its source and type (e.g. EFSA tolerable daily intake, EPA legal limit, NYC action level). Where none exists, the card says so. Never called a "safe level".
+_Avoid_: safe level, safe limit, threshold
+
 **Location**:
 Where the person is buying or eating the food; used only as a fallback prior for origin. Distinct from Origin.
 _Avoid_: region, market

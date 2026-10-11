@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Water Result Options</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#8a8a85;--line:#e2e0da;--ghost:#efeee9;--hi:#c2410c;--med:#b45309;--lo:#15803d;--accent:#1f4b99}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,system-ui,sans-serif;padding:24px 16px}
+h1{font-size:20px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:24px}
+@media (max-width:420px){.grid{grid-template-columns:1fr}}
+.opt h2{font-size:15px;margin:0 0 2px}.why{margin:0 0 10px;color:var(--mute);font-size:12.5px}
+.frame{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;position:relative}
+.sample{position:absolute;top:8px;right:10px;font-size:10px;color:var(--mute);letter-spacing:.08em}
+.name{font-weight:700;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:3px 9px;font-size:12px}.chip.inf{border-style:dashed}
+.chip::after{content:" ✎";color:var(--mute)}
+.cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.col{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px}
+.col.best{border:2px solid var(--lo)}
+.col h4{margin:0 0 4px;font-size:13px}
+.t{font-weight:800;font-size:14px}
+.lo{color:var(--lo)}.med{color:var(--med)}.hi{color:var(--hi)}.unk{color:var(--mute)}
+.badge{display:inline-block;font-size:10.5px;font-weight:600;background:var(--ghost);border-radius:6px;padding:2px 6px;margin-top:4px}
+.tip{margin-top:12px;border:1px solid #c7d6f0;background:#f2f6fd;border-radius:8px;padding:10px;font-size:13px}
+.miss{font-size:12px;color:var(--mute);margin-top:8px}
+.big{font-size:24px;font-weight:800}
+.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#bbf7d0,#fde68a,#fdba74);margin:14px 0 4px}
+.band{position:absolute;top:-4px;height:20px;border:2px solid var(--ink);border-radius:6px;background:rgba(29,29,27,.08)}
+.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.ref{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line);font-size:11px;color:#4b4b47}
+.src{font-size:11px;color:var(--mute);margin-top:10px}
+</style>
+</head>
+<body>
+<h1>How does a water check look?</h1>
+<p class="sub">Story: in a NYC hotel room, unsure about the tap. Evidence from docs/water-evidence.md (NYC DEP 2025, Mason 2018). All data is SAMPLE.</p>
+<div class="grid">
+
+<section class="opt">
+<h2>A. Side-by-side options for here (recommended)</h2>
+<p class="why">Answers the real question ("which should I drink here?") in one glance. Each column has its own Evidence Tier, so the honesty is per option. Breaks from the single-card pattern for water only.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="name">Drinking water</div>
+<div class="chips"><span class="chip">📍 New York</span><span class="chip inf">Hotel, older building</span><span class="chip">Cold</span></div>
+<div class="cmp">
+<div class="col best"><h4>Tap, run 30s+</h4><div class="t lo">Lower</div><div class="badge">Official report · T3</div><div style="margin-top:6px">No lead in the city's mains; risk is building pipes</div><div class="ref">Lead: 10 vs action level 15 µg/L (90th pct homes, NYC DEP)<br>PFOA: ≤2.7 vs EPA limit 4.0 ng/L</div></div>
+<div class="col"><h4>Bottled (PET)</h4><div class="t med">Higher</div><div class="badge">Peer-reviewed · T3</div><div style="margin-top:6px">About 2x the microplastic particles of tap</div><div class="ref">Microplastics: no reference level exists<br>Antimony: under EU limit unless stored hot (60°C)</div></div>
+<div class="col"><h4>Water machine</h4><div class="t unk">Unknown</div><div class="badge">Little data · T5</div><div style="margin-top:6px">Depends on filter and cleaning</div><div class="ref">No reference data for this machine</div></div>
+</div>
+<div class="tip"><b>Do this:</b> run the cold tap for 30 seconds to 2 minutes, then fill a glass or steel bottle.</div>
+<div class="miss">Would sharpen this: building age or pipe type · a lab test of this tap (not in our data yet)</div>
+<div class="src">Sources: NYC DEP 2025 water quality report; Mason et al. 2018</div>
+</div>
+</section>
+
+<section class="opt">
+<h2>B. Same card as food, with a Swap</h2>
+<p class="why">Consistent with the food result card (decision 6). Checks one choice at a time; the alternative shows only as a Swap.</p>
+<div class="frame"><span class="sample">SAMPLE</span>
+<div class="name">Bottled water (PET)</div>
+<div class="chips"><span class="chip inf">Plastic bottle</span><span class="chip">Room temp</span><span class="chip">📍 New York</span></div>
+<div class="big med">About typical</div>
+<div class="badge">Inferred from studies · T3</div>
+<div class="bar"><div class="band" style="left:25%;width:55%"></div></div>
+<div class="scale"><span>Lower</span><span>Typical</span><span>Higher</span></div>
+<div class="tip"><b>Swap:</b> NYC tap, cold, run 30s+. About 2x fewer microplastic particles (peer-reviewed; size cut-offs vary).</div>
+<div class="miss">Would sharpen this: brand · storage heat (hot cars raise leaching)</div>
+</div>
+</section>
+
+</div>
+</body>
+</html>

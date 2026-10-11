@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Capture Review</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#77766f;--line:#e2e0da;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;--warn:#a16207;--warnbg:#fef3c7;--na:#9a9993;--accent:#1f4b99}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--card:#1f1f1d;--ink:#ecebe6;--mute:#a3a29b;--line:#34332f;--okbg:#14321f;--badbg:#3b1717;--warnbg:#3a2e10;--accent:#7aa2e8}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,system-ui,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:2}
+header h1{font-size:15px;margin:0}
+.pill{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 9px;color:var(--mute)}
+.grow{flex:1}
+button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--mute)}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;padding:16px;max-width:1500px;margin:0 auto}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.imgwrap{display:flex;align-items:center;justify-content:center;background:#0001;border-radius:8px;min-height:300px}
+.imgwrap img{max-width:100%;max-height:68vh;border-radius:6px}
+.title{font-size:18px;font-weight:700;margin:0 0 4px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.badge{font-size:11.5px;font-weight:600;border-radius:6px;padding:2px 8px;background:var(--bg);border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--mute);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.right td:first-child{border-left:3px solid var(--ok)} tr.wrong td:first-child{border-left:3px solid var(--bad)} tr.abstain td:first-child{border-left:3px solid var(--warn)} tr.na td:first-child{border-left:3px solid transparent}
+tr.wrong{background:var(--badbg)} tr.abstain{background:var(--warnbg)}
+.status{font-size:11px;font-weight:700;text-transform:uppercase}
+.right .status{color:var(--ok)} .wrong .status{color:var(--bad)} .abstain .status{color:var(--warn)} .na .status{color:var(--na)}
+.conf{font-size:11px;color:var(--mute)}
+.notes-llm{margin-top:10px;font-size:13px;border-left:3px solid var(--accent);padding:6px 10px;background:var(--bg);border-radius:4px}
+details{margin-top:10px}
+summary{cursor:pointer;color:var(--mute);font-size:12.5px}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;overflow:auto;font-size:12px;max-height:420px;white-space:pre-wrap;word-break:break-word}
+.annot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.pass{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.fail{background:var(--badbg);border-color:var(--bad);color:var(--bad);font-weight:700}
+.defer{background:var(--warnbg);border-color:var(--warn);color:var(--warn);font-weight:700}
+.sel{outline:3px solid var(--ink);outline-offset:1px}
+textarea{width:100%;min-height:70px;margin-top:8px}
+#saved{font-size:12px;color:var(--mute)}
+.drawer{position:fixed;top:0;right:0;height:100vh;width:min(640px,100vw);background:var(--card);border-left:1px solid var(--line);box-shadow:-8px 0 24px #0003;padding:16px;overflow:auto;transform:translateX(105%);transition:transform .2s;z-index:5}
+.drawer.open{transform:none}
+.drawer h2{font-size:16px;margin:0 0 4px}
+kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px}
+.help{font-size:12px;color:var(--mute)}
+td.fname{cursor:pointer;white-space:nowrap}
+td.fname .car{display:inline-block;width:12px;color:var(--mute);transition:transform .15s}
+tr.open td.fname .car{transform:rotate(90deg)}
+tr.tax td{background:var(--bg);border-left:3px solid transparent;padding:8px 10px 10px 28px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font:11.5px ui-monospace,monospace;border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--mute);background:var(--card)}
+.chip.g{border-color:var(--ok);color:var(--ok);font-weight:700}
+.chip.p{border-color:var(--accent);color:var(--accent);font-weight:700}
+.chip.g.p{background:var(--okbg)}
+.legend{font-size:11px;color:var(--mute);margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Image capture review</h1>
+  <span class="pill" id="run">…</span>
+  <span class="pill" id="counter">…</span>
+  <span class="pill" id="progress">…</span>
+  <span class="grow"></span>
+  <select id="filter" aria-label="Filter by set"><option value="">All sets</option></select>
+  <input id="jump" placeholder="Jump to id (e.g. snap-013)" size="20">
+  <button id="prev" title="Previous (←)">← Prev</button>
+  <button id="next" title="Next (→)">Next →</button>
+  <button id="infoBtn" title="LLM config (I)">ⓘ LLM config</button>
+</header>
+<main>
+  <section class="card">
+    <div class="imgwrap"><img id="img" alt=""></div>
+    <details><summary>Golden label (full)</summary><pre id="goldRaw"></pre></details>
+  </section>
+  <section class="card">
+    <p class="title" id="tid">…</p>
+    <div class="meta" id="meta"></div>
+    <table>
+      <thead><tr><th>Field</th><th>Golden</th><th>LLM extracted</th><th>Status</th></tr></thead>
+      <tbody id="fields"></tbody>
+    </table>
+    <div class="notes-llm"><b>LLM notes:</b> <span id="llmNotes"></span></div>
+    <details><summary>Raw LLM output (JSON)</summary><pre id="predRaw"></pre></details>
+    <div class="annot">
+      <button class="pass" id="bPass">✓ Pass <kbd>1</kbd></button>
+      <button class="fail" id="bFail">✗ Fail <kbd>2</kbd></button>
+      <button class="defer" id="bDefer">? Defer <kbd>D</kbd></button>
+      <button id="bUndo">Undo <kbd>U</kbd></button>
+      <span id="saved"></span>
+    </div>
+    <textarea id="note" placeholder="What went wrong (or right)? Auto-saves. Cmd+Enter = save and next"></textarea>
+    <p class="help">Click a field name (▸) to see its possible values · <kbd>T</kbd> expand/collapse all</p>
+  <p class="help"><kbd>←</kbd>/<kbd>→</kbd> navigate · <kbd>1</kbd> pass · <kbd>2</kbd> fail · <kbd>D</kbd> defer · <kbd>U</kbd> undo · <kbd>I</kbd> config · <kbd>⌘S</kbd> save · <kbd>⌘↵</kbd> save and next</p>
+  </section>
+</main>
+<aside class="drawer" id="drawer" aria-label="LLM config">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2>Exact request sent to the Anthropic API</h2><button id="closeInfo">Close</button></div>
+  <p class="help" id="cfgMeta"></p>
+  <p class="help">Every image used this request; only the base64 image bytes differ. The structured-output schema and system prompt are expanded below.</p>
+  <h3 style="font-size:13px">Parameters</h3>
+  <table id="cfgTable"></table>
+  <details open><summary>System prompt</summary><pre id="cfgSystem"></pre></details>
+  <details><summary>output_config.format (JSON schema)</summary><pre id="cfgSchema"></pre></details>
+  <details><summary>messages</summary><pre id="cfgMessages"></pre></details>
+  <details><summary>Full request (JSON)</summary><pre id="cfgFull"></pre></details>
+</aside>
+<script>
+const FIELDS = ["subject_type","brand","product_name","food_category","packaging_material","heated","vessel","machine_type","jug_material","certification_marks"];
+const UNK = new Set(["unknown","",null,undefined]);
+let DATA, view = [], i = 0, labels = {}, history = [];
+
+const $ = id => document.getElementById(id);
+const txt = (el, s) => { el.textContent = s ?? ""; };
+const show = v => Array.isArray(v) ? (v.length ? v.join(", ") : "[]") : (v ?? "—");
+const norm = s => (s || "").toString().normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+function status(field, g, p) {
+  if (field === "certification_marks") {
+    const clean = v => (v || []).filter(x => x !== "none_visible");
+    if (Array.isArray(g[field]) && clean(g[field]).length === 0 && clean(p[field]).length === 0) return "right";
+  }
+  const gv = g[field];
+  if (gv === undefined || UNK.has(gv) || (Array.isArray(gv) && (gv.length === 0 || gv.every(x => UNK.has(x))))) return "na";
+  const pv = p[field];
+  if (UNK.has(pv) || (Array.isArray(pv) && pv.length === 0)) return "abstain";
+  if (Array.isArray(gv)) { const a = new Set(gv), b = new Set(pv || []); return [...a].some(x => b.has(x)) ? "right" : "wrong"; }
+  if (field === "brand" || field === "product_name") { const a = norm(gv), b = norm(pv); return a && b && (a.includes(b) || b.includes(a)) ? "right" : "wrong"; }
+  return gv === pv ? "right" : "wrong";
+}
+
+const openTax = new Set();
+function allowedValues(field) {
+  const prop = DATA.config?.request?.output_config?.format?.schema?.properties?.[field];
+  if (!prop) return null;
+  return prop.enum || prop.items?.enum || null;
+}
+function taxonomyRow(field, gv, pv) {
+  const tr = document.createElement("tr"); tr.className = "tax";
+  const td = document.createElement("td"); td.colSpan = 4;
+  const vals = allowedValues(field);
+  const asSet = v => new Set(Array.isArray(v) ? v : [v]);
+  const gs = asSet(gv), ps = asSet(pv);
+  if (!vals) {
+    const s = document.createElement("div"); s.className = "help";
+    s.textContent = field === "certification_marks" ? "Free text list (any certification text the model can read, e.g. \"NSF/ANSI 53\"). Golden label uses \"none_visible\" when there is none." : "Free text (as printed on the item, or \"unknown\").";
+    td.append(s);
+  } else {
+    const kind = DATA.config.request.output_config.format.schema.properties[field].type === "array" ? "Multi-select" : "Single value";
+    const head = document.createElement("div"); head.className = "help"; head.textContent = `${kind}: ${vals.length} allowed values (from the output schema sent to the API)`; td.append(head);
+    const chips = document.createElement("div"); chips.className = "chips";
+    const extra = [...gs].filter(v => v !== undefined && !vals.includes(v));
+    for (const v of [...vals, ...extra]) {
+      const ch = document.createElement("span"); ch.className = "chip" + (gs.has(v) ? " g" : "") + (ps.has(v) ? " p" : ""); ch.textContent = v + (vals.includes(v) ? "" : " (golden only, not in schema)"); chips.append(ch);
+    }
+    td.append(chips);
+    const lg = document.createElement("div"); lg.className = "legend"; lg.innerHTML = '<span class="chip g">golden</span> <span class="chip p">LLM</span> <span class="chip g p">both</span>'; td.append(lg);
+  }
+  tr.append(td); return tr;
+}
+
+function render() {
+  if (!view.length) { txt($("tid"), "No traces"); return; }
+  const t = view[i], g = t.gold, p = t.pred;
+  $("img").src = g.file || "";
+  $("img").alt = `${t.id} photo`;
+  txt($("tid"), t.id);
+  const meta = $("meta"); meta.replaceChildren();
+  const add = s => { const b = document.createElement("span"); b.className = "badge"; b.textContent = s; meta.append(b); };
+  add(g.set || p.set); if (g.difficulty) add(`difficulty: ${g.difficulty}`);
+  add(`served: ${p.served_model}`); add(`${p.latency_s}s`); add(`${p.input_tokens} in / ${p.output_tokens} out tok`); add(`stop: ${p.stop_reason}`);
+  if (p.error) add(`ERROR: ${p.error}`);
+  const tb = $("fields"); tb.replaceChildren();
+  for (const f of FIELDS) {
+    const st = status(f, g, p), tr = document.createElement("tr"); tr.className = st;
+    const c = (p.confidence || {})[f === "packaging_material" ? "packaging_material" : f];
+    const cells = [f, show(g[f]), show(p[f]), st === "na" ? "no label" : st];
+    cells.forEach((v, k) => { const td = document.createElement("td"); if (k === 3) td.className = "status"; td.textContent = v;
+      if (k === 0) { td.className = "fname"; td.title = "Show possible values"; const car = document.createElement("span"); car.className = "car"; car.textContent = "▸"; td.prepend(car); }
+      if (k === 2 && c) { const s = document.createElement("div"); s.className = "conf"; s.textContent = `confidence: ${c}`; td.append(s); } tr.append(td); });
+    const tax = taxonomyRow(f, g[f], p[f]);
+    const isOpen = openTax.has(f);
+    tr.classList.toggle("open", isOpen); tax.hidden = !isOpen;
+    tr.querySelector("td.fname").onclick = () => { isOpen ? openTax.delete(f) : openTax.add(f); render(); };
+    tb.append(tr, tax);
+  }
+  txt($("llmNotes"), p.notes);
+  txt($("predRaw"), JSON.stringify(p, null, 2));
+  txt($("goldRaw"), JSON.stringify(g, null, 2));
+  const L = labels[t.id] || {};
+  ["bPass","bFail","bDefer"].forEach(b => $(b).classList.remove("sel"));
+  if (L.verdict) $({pass:"bPass",fail:"bFail",defer:"bDefer"}[L.verdict]).classList.add("sel");
+  $("note").value = L.note || "";
+  txt($("counter"), `${i + 1} of ${view.length}`);
+  const done = DATA.traces.filter(x => labels[x.id]?.verdict).length;
+  txt($("progress"), `${done} labelled · ${DATA.traces.length - done} remaining`);
+  location.hash = t.id;
+}
+
+let saveTimer;
+async function save() {
+  clearTimeout(saveTimer);
+  try {
+    const r = await fetch("/api/labels", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(labels)});
+    txt($("saved"), r.ok ? `Saved ${new Date().toLocaleTimeString()}` : "Save failed");
+  } catch { txt($("saved"), "Save failed (server down?)"); }
+}
+const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(save, 400); };
+
+function setVerdict(v) {
+  const id = view[i].id; history.push([id, JSON.parse(JSON.stringify(labels[id] || null))]);
+  labels[id] = {...(labels[id] || {}), verdict: v, note: $("note").value, at: new Date().toISOString()};
+  save(); render();
+}
+function undo() { const h = history.pop(); if (!h) return; const [id, prev] = h; if (prev) labels[id] = prev; else delete labels[id]; save(); const k = view.findIndex(t => t.id === id); if (k >= 0) i = k; render(); }
+const go = d => { if (!view.length) return; i = (i + d + view.length) % view.length; render(); };
+
+function renderConfig() {
+  const c = DATA.config; if (!c) { txt($("cfgMeta"), "No config snapshot found for this run."); return; }
+  const r = c.request;
+  txt($("cfgMeta"), `${c.endpoint} · ${c.sdk}${c.note ? " · " + c.note : ""}`);
+  const rows = [["model", r.model], ["max_tokens", r.max_tokens], ["output_config.effort", r.output_config.effort],
+    ["output_config.format.type", r.output_config.format.type], ["thinking", r.thinking ? JSON.stringify(r.thinking) : "not sent (Opus 5.5 default: adaptive)"],
+    ["betas", (r.betas || []).join(", ")], ["extra_body", JSON.stringify(r.extra_body)],
+    ["temperature / top_p", "not sent (rejected on Opus 5.5)"], ["image media_type", r.messages[0].content[0].source.media_type],
+    ["user text", r.messages[0].content[1].text]];
+  const tb = $("cfgTable"); tb.replaceChildren();
+  for (const [k, v] of rows) { const tr = document.createElement("tr"); const a = document.createElement("td"), b = document.createElement("td");
+    a.textContent = k; a.style.color = "var(--mute)"; b.textContent = v; b.style.fontFamily = "ui-monospace,monospace"; tr.append(a, b); tb.append(tr); }
+  txt($("cfgSystem"), r.system);
+  txt($("cfgSchema"), JSON.stringify(r.output_config.format.schema, null, 2));
+  txt($("cfgMessages"), JSON.stringify(r.messages, null, 2));
+  txt($("cfgFull"), JSON.stringify(r, null, 2));
+}
+
+function applyFilter() {
+  const f = $("filter").value, cur = view[i]?.id;
+  view = DATA.traces.filter(t => !f || (t.gold.set || t.pred.set) === f);
+  i = Math.max(0, view.findIndex(t => t.id === cur)); render();
+}
+
+async function init() {
+  DATA = await (await fetch("/api/traces")).json();
+  labels = await (await fetch("/api/labels")).json();
+  txt($("run"), DATA.run);
+  for (const s of [...new Set(DATA.traces.map(t => t.gold.set || t.pred.set))].sort()) { const o = document.createElement("option"); o.value = o.textContent = s; $("filter").append(o); }
+  view = DATA.traces;
+  const h = location.hash.slice(1); const k = view.findIndex(t => t.id === h); if (k >= 0) i = k;
+  renderConfig(); render();
+}
+
+$("prev").onclick = () => go(-1); $("next").onclick = () => go(1);
+$("bPass").onclick = () => setVerdict("pass"); $("bFail").onclick = () => setVerdict("fail"); $("bDefer").onclick = () => setVerdict("defer"); $("bUndo").onclick = undo;
+$("infoBtn").onclick = () => $("drawer").classList.add("open"); $("closeInfo").onclick = () => $("drawer").classList.remove("open");
+$("filter").onchange = applyFilter;
+$("jump").onkeydown = e => { if (e.key === "Enter") { const k = view.findIndex(t => t.id === e.target.value.trim()); if (k >= 0) { i = k; render(); e.target.blur(); } } };
+$("note").oninput = () => { const id = view[i].id; labels[id] = {...(labels[id] || {}), note: $("note").value}; saveSoon(); };
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); save(); return; }
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); save(); go(1); return; }
+  if (["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) { if (e.key === "Escape") document.activeElement.blur(); return; }
+  const k = e.key.toLowerCase();
+  if (e.key === "ArrowRight") go(1); else if (e.key === "ArrowLeft") go(-1);
+  else if (k === "1") setVerdict("pass"); else if (k === "2") setVerdict("fail"); else if (k === "d") setVerdict("defer"); else if (k === "u") undo();
+  else if (k === "t") { if (openTax.size === FIELDS.length) openTax.clear(); else FIELDS.forEach(f => openTax.add(f)); render(); }
+  else if (k === "i") $("drawer").classList.toggle("open"); else if (e.key === "Escape") $("drawer").classList.remove("open");
+});
+init();
+</script>
+</body>
+</html>

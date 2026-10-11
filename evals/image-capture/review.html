@@ -48,6 +48,16 @@ textarea{width:100%;min-height:70px;margin-top:8px}
 .drawer h2{font-size:16px;margin:0 0 4px}
 kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px}
 .help{font-size:12px;color:var(--mute)}
+td.fname{cursor:pointer;white-space:nowrap}
+td.fname .car{display:inline-block;width:12px;color:var(--mute);transition:transform .15s}
+tr.open td.fname .car{transform:rotate(90deg)}
+tr.tax td{background:var(--bg);border-left:3px solid transparent;padding:8px 10px 10px 28px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font:11.5px ui-monospace,monospace;border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--mute);background:var(--card)}
+.chip.g{border-color:var(--ok);color:var(--ok);font-weight:700}
+.chip.p{border-color:var(--accent);color:var(--accent);font-weight:700}
+.chip.g.p{background:var(--okbg)}
+.legend{font-size:11px;color:var(--mute);margin-top:6px}
 </style>
 </head>
 <body>
@@ -85,7 +95,8 @@ kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-bottom-
       <span id="saved"></span>
     </div>
     <textarea id="note" placeholder="What went wrong (or right)? Auto-saves. Cmd+Enter = save and next"></textarea>
-    <p class="help"><kbd>←</kbd>/<kbd>→</kbd> navigate · <kbd>1</kbd> pass · <kbd>2</kbd> fail · <kbd>D</kbd> defer · <kbd>U</kbd> undo · <kbd>I</kbd> config · <kbd>⌘S</kbd> save · <kbd>⌘↵</kbd> save and next</p>
+    <p class="help">Click a field name (▸) to see its possible values · <kbd>T</kbd> expand/collapse all</p>
+  <p class="help"><kbd>←</kbd>/<kbd>→</kbd> navigate · <kbd>1</kbd> pass · <kbd>2</kbd> fail · <kbd>D</kbd> defer · <kbd>U</kbd> undo · <kbd>I</kbd> config · <kbd>⌘S</kbd> save · <kbd>⌘↵</kbd> save and next</p>
   </section>
 </main>
 <aside class="drawer" id="drawer" aria-label="LLM config">
@@ -123,6 +134,36 @@ function status(field, g, p) {
   return gv === pv ? "right" : "wrong";
 }
 
+const openTax = new Set();
+function allowedValues(field) {
+  const prop = DATA.config?.request?.output_config?.format?.schema?.properties?.[field];
+  if (!prop) return null;
+  return prop.enum || prop.items?.enum || null;
+}
+function taxonomyRow(field, gv, pv) {
+  const tr = document.createElement("tr"); tr.className = "tax";
+  const td = document.createElement("td"); td.colSpan = 4;
+  const vals = allowedValues(field);
+  const asSet = v => new Set(Array.isArray(v) ? v : [v]);
+  const gs = asSet(gv), ps = asSet(pv);
+  if (!vals) {
+    const s = document.createElement("div"); s.className = "help";
+    s.textContent = field === "certification_marks" ? "Free text list (any certification text the model can read, e.g. \"NSF/ANSI 53\"). Golden label uses \"none_visible\" when there is none." : "Free text (as printed on the item, or \"unknown\").";
+    td.append(s);
+  } else {
+    const kind = DATA.config.request.output_config.format.schema.properties[field].type === "array" ? "Multi-select" : "Single value";
+    const head = document.createElement("div"); head.className = "help"; head.textContent = `${kind}: ${vals.length} allowed values (from the output schema sent to the API)`; td.append(head);
+    const chips = document.createElement("div"); chips.className = "chips";
+    const extra = [...gs].filter(v => v !== undefined && !vals.includes(v));
+    for (const v of [...vals, ...extra]) {
+      const ch = document.createElement("span"); ch.className = "chip" + (gs.has(v) ? " g" : "") + (ps.has(v) ? " p" : ""); ch.textContent = v + (vals.includes(v) ? "" : " (golden only, not in schema)"); chips.append(ch);
+    }
+    td.append(chips);
+    const lg = document.createElement("div"); lg.className = "legend"; lg.innerHTML = '<span class="chip g">golden</span> <span class="chip p">LLM</span> <span class="chip g p">both</span>'; td.append(lg);
+  }
+  tr.append(td); return tr;
+}
+
 function render() {
   if (!view.length) { txt($("tid"), "No traces"); return; }
   const t = view[i], g = t.gold, p = t.pred;
@@ -140,8 +181,13 @@ function render() {
     const c = (p.confidence || {})[f === "packaging_material" ? "packaging_material" : f];
     const cells = [f, show(g[f]), show(p[f]), st === "na" ? "no label" : st];
     cells.forEach((v, k) => { const td = document.createElement("td"); if (k === 3) td.className = "status"; td.textContent = v;
+      if (k === 0) { td.className = "fname"; td.title = "Show possible values"; const car = document.createElement("span"); car.className = "car"; car.textContent = "▸"; td.prepend(car); }
       if (k === 2 && c) { const s = document.createElement("div"); s.className = "conf"; s.textContent = `confidence: ${c}`; td.append(s); } tr.append(td); });
-    tb.append(tr);
+    const tax = taxonomyRow(f, g[f], p[f]);
+    const isOpen = openTax.has(f);
+    tr.classList.toggle("open", isOpen); tax.hidden = !isOpen;
+    tr.querySelector("td.fname").onclick = () => { isOpen ? openTax.delete(f) : openTax.add(f); render(); };
+    tb.append(tr, tax);
   }
   txt($("llmNotes"), p.notes);
   txt($("predRaw"), JSON.stringify(p, null, 2));
@@ -221,6 +267,7 @@ document.addEventListener("keydown", e => {
   const k = e.key.toLowerCase();
   if (e.key === "ArrowRight") go(1); else if (e.key === "ArrowLeft") go(-1);
   else if (k === "1") setVerdict("pass"); else if (k === "2") setVerdict("fail"); else if (k === "d") setVerdict("defer"); else if (k === "u") undo();
+  else if (k === "t") { if (openTax.size === FIELDS.length) openTax.clear(); else FIELDS.forEach(f => openTax.add(f)); render(); }
   else if (k === "i") $("drawer").classList.toggle("open"); else if (e.key === "Escape") $("drawer").classList.remove("open");
 });
 init();

@@ -40,3 +40,6 @@ Observation: no lookup, no research step; the decision was immediate.
 
 ## Q7: what was going through your mind at the tap
 > "uncertainty about quality"
+
+## Q8: last time drinking tap water in Scotland
+> "took my bottle which I picked from research to ensure I have one that minimises BPA and BPA-alternatives (quality of research TBD) and then I turned the tap on, waited till it was cold then filled up my bottle then started drinking"

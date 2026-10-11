@@ -8,6 +8,7 @@ Grilling session, 2026-10-11. Research basis: self-interview (Philip) only, a ha
 | 2 | Exposure headline | Top Contributors with Swaps; no aggregate number | Unrated checks are counted and shown |
 | 3 | Health OS Agent | Invokable from any screen (button/modal, later a wake word); **stubbed** this round | |
 | 4 | Coming-soon Modules layout | **C. Sidebar nav**: modules listed in a left nav, the others greyed out | Options: `wireframes/q-coming-soon-layout.html`. Trade-off accepted: the vision is less visible in screenshots |
+| 5 | Food Check confirmation | Result first; Food Attributes shown as editable chips on the result, and editing one re-runs the estimate | Chips double as the trust signal (A#41) |
 
 ## Jacquie conflicts acknowledged
 

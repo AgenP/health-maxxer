@@ -32,6 +32,10 @@ _Avoid_: scan, lookup, query
 The result of a Food Check: a relative risk tier with an uncertainty band, an Evidence Tier, and a Swap where one exists. Never a safety or toxicity verdict.
 _Avoid_: score, rating, toxicity score
 
+**Food Attributes**:
+The properties inferred about a food in a Food Check (packaging, heated, brand, category, fattiness, Origin), shown as editable chips on the Exposure Estimate. Correcting one re-runs the estimate.
+_Avoid_: features, tags, metadata
+
 **Evidence Tier**:
 How directly an Exposure Estimate is grounded: T1 lab-measured, T2 similar products, T3 category, T4 origin adjustment, T5 global prior.
 _Avoid_: confidence level, data quality

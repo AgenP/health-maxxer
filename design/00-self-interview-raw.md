@@ -27,3 +27,8 @@ Observation: low-deliberation moment; once a non-plastic option existed, the swi
 > "2 water bottles from the front desk. Now that I reflect on this, I probably could have go to the bar which was open and asked for a cup, but I wanted one for the next day (today)"
 
 Observations: the need was portable water for tomorrow; plastic bottles won on portability and availability. A non-plastic route (bar + cup) existed but didn't solve "carry it tomorrow". "Now that I reflect" = hindsight; in the moment the plastic question was not salient.
+
+## Q5: a specific tap decision on this trip
+> "in my hotel room. Thats when I decided to ask for bottled water. Enough for current thirst and for the morning before I get outside and can somewhere where I can buy a drink"
+
+Observations: the hotel-room tap is the real origin of the hotel story. Uncertainty about local tap water pushed him to plastic bottled water, swapping an unknown risk (tap) for a known-but-unweighed one (plastic). Quantity planned to bridge until he could buy a drink outside.

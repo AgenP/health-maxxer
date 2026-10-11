@@ -195,11 +195,12 @@ async function submitCheck(){
  S.text=($("#txt")||{}).value||S.text;
  if(!S.text&&!S.photo){renderCheckInput("Add a photo or type what it is.");return}
  $("#checkModal").innerHTML=`<p><span class="spinner"></span>Reading ${S.photo?"your photo":"that"}…</p>`;
- let key=classify(S.text),attrsLive=null;
+ let key=classify(S.text),attrsLive=null,hint=null;S.live=false;
  if(S.photoData&&S.state!=="offline"){
   try{const r=await fetch("/api/extract",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({image:S.photoData,text:S.text,location:S.location})});
-   if(r.ok){const j=await r.json();key=j.estimate_key||key;attrsLive=j.chips||null;S.live=true}}catch(e){}
+   if(r.ok){const j=await r.json();key=j.estimate_key||key;attrsLive=(j.chips&&j.chips.length)?j.chips:null;hint=j.packaging_hint||null;S.live=true}}catch(e){}
  } else await new Promise(r=>setTimeout(r,700));
+ if(key==="unknown"&&hint){answerUnknown(hint,attrsLive);return}
  showResult(key,attrsLive);
 }
 function showResult(key,attrsLive){
@@ -221,10 +222,10 @@ function showResult(key,attrsLive){
  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="ghostbtn" onclick="openCheck()">Check another</button><button class="cta" onclick="logAndClose('${key}')">Done</button></div>`;
 }
 function toggleHeat(key){showResult(key==="wrap"?"wrapCold":"wrap")}
-function answerUnknown(p){
+function answerUnknown(p,attrsLive){
  const m={plastic:["med","Probably typical, maybe higher","Plastic packaging: wide range"],can:["med","Probably typical","Can liners can contain bisphenols"],glass:["lo","Probably lower","Glass or no packaging: less to migrate"]}[p];
  Object.assign(EST.unknown,{tier:m[0],word:m[1],ev:"Inferred from packaging · T3",band:[15,60],why:[m[2],"Estimated from packaging alone"],swap:"<b>Swap:</b> where you can, choose glass or unpackaged. <span class='badge'>Swap Impact: inferred</span>"});
- showResult("unknown");
+ showResult("unknown",attrsLive);
 }
 function renderWater(e,attrsLive){
  $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>

@@ -22,3 +22,8 @@ Correction (Q3 attempt): interviewer assumed Philip was holding the empty bottle
 > "looking for a cup. Once done I came back to my computer which is where I am now"
 
 Observation: low-deliberation moment; once a non-plastic option existed, the switch was effortless and the question was closed (no further thought about the machine water itself, as far as reported).
+
+## Q4: the hotel
+> "2 water bottles from the front desk. Now that I reflect on this, I probably could have go to the bar which was open and asked for a cup, but I wanted one for the next day (today)"
+
+Observations: the need was portable water for tomorrow; plastic bottles won on portability and availability. A non-plastic route (bar + cup) existed but didn't solve "carry it tomorrow". "Now that I reflect" = hindsight; in the moment the plastic question was not salient.

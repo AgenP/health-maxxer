@@ -31,6 +31,9 @@ h1{font-size:24px;margin:0}
 .card h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
 .row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .row:first-of-type{border-top:0}
+.row.click{cursor:pointer;border-radius:8px;margin:0 -8px;padding:12px 8px}
+.row.click:hover{background:var(--ghost)}
+.row.click:focus-visible{outline:2px solid var(--accent)}
 .food{font-weight:700}
 .meta{font-size:12.5px;color:var(--mute)}
 .swapl{font-size:13px;color:var(--accent);margin-top:2px}
@@ -43,7 +46,7 @@ h1{font-size:24px;margin:0}
 .scrim.open{display:flex}
 .modal{background:var(--card);border-radius:16px;width:min(620px,100%);max-height:92vh;overflow:auto;padding:22px;position:relative}
 .x{position:absolute;right:14px;top:12px;border:0;background:none;font-size:20px;color:var(--mute)}
-.drop{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mute);font-size:13.5px}
+.drop{display:block;cursor:pointer;border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mute);font-size:13.5px}
 .drop.has{border-style:solid;color:var(--ink)}
 .drop img{max-height:160px;max-width:100%;border-radius:8px;display:block;margin:0 auto 8px}
 .or{text-align:center;color:var(--mute);font-size:12px;margin:10px 0}
@@ -161,7 +164,7 @@ function renderDash(){
  <div style="display:flex;gap:8px;align-items:center"><select id="locSel" aria-label="Location" style="width:auto">${LOCATIONS.map(l=>`<option ${l===S.location?"selected":""}>📍 ${l}</option>`).join("")}</select>
  <button class="cta" onclick="openCheck()">+ Check a food</button></div></div>
  ${rows.length?`<div class="card"><h3>Your biggest sources this week</h3>
- ${rows.map((r,i)=>`<div class="row"><div><div class="food">${i+1}. ${r.label}</div><div class="meta">${r.n}× this week · ${r.ev}</div><div class="swapl">Swap: ${r.swap} →</div></div><span class="tier ${tierClass(r.tier)}">${tierWord(r.tier)}</span></div>`).join("")}
+ ${rows.map((r,i)=>`<div class="row click" role="button" tabindex="0" onclick="openFromRow('${r.k}')" onkeydown="if(event.key==='Enter')openFromRow('${r.k}')"><div><div class="food">${i+1}. ${r.label}</div><div class="meta">${r.n}× this week · ${r.ev}</div><div class="swapl">Swap: ${r.swap} →</div></div><span class="tier ${tierClass(r.tier)}">${tierWord(r.tier)}</span></div>`).join("")}
  <div class="meta" style="margin-top:8px">${unrated} checks unrated (not enough data). There's no single exposure score on purpose: tiers don't add up.</div></div>`
  :`<div class="card empty"><div style="font-size:34px">🥤</div><h2 style="color:var(--ink);margin:8px 0 4px">Nothing checked yet</h2><p>Snap or type what you're about to eat or drink. Each check builds your weekly picture.</p><button class="cta" onclick="openCheck()">Check your first food</button></div>`}
  <p class="meta" style="margin-top:16px">Estimates are relative and come with an evidence label. Lab data: PlasticList (US). Water: NYC DEP 2025 report, Mason et al. 2018.</p>`;
@@ -169,6 +172,7 @@ function renderDash(){
 }
 
 function openCheck(){S.photo=null;S.photoData=null;S.text="";renderCheckInput();$("#checkScrim").classList.add("open")}
+function openFromRow(k){S.photo=null;S.photoData=null;S.live=false;$("#checkScrim").classList.add("open");if(k==="chick"){answerUnknown("can",[["Canned chickpeas",0],["Can",0]]);return}showResult(EST[k]?k:"unknown")}
 function closeCheck(){$("#checkScrim").classList.remove("open");renderDash()}
 function renderCheckInput(err){
  $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>
@@ -246,7 +250,7 @@ function logAndClose(key){
  const e=EST[key];
  const lab={wrap:"Starbucks Spinach Feta Wrap, warmed",wrapCold:"Starbucks Spinach Feta Wrap, unheated",unknown:"Unrecognised item"}[key];
  const ex=S.history.find(h=>h.label===lab);
- if(ex)ex.n++;else S.history.unshift({n:1,label:lab+" (just now)",tier:e.tier,ev:e.ev.replace(/^[^A-Za-z]+/,""),swap:key==="wrap"?"Egg bites: typically about 4x lower":"see result"});
+ if(ex)ex.n++;else S.history.unshift({k:key,n:1,label:lab+" (just now)",tier:e.tier,ev:e.ev.replace(/^[^A-Za-z]+/,""),swap:key==="wrap"?"Egg bites: typically about 4x lower":"see result"});
  closeCheck();
 }
 

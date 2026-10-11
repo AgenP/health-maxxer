@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health OS</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#8a8a85;--line:#e2e0da;--ghost:#efeee9;--hi:#c2410c;--med:#b45309;--lo:#15803d;--accent:#1f4b99;--accent-soft:#f2f6fd}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--card:#1f1f1d;--ink:#eeede8;--mute:#9a9a94;--line:#34332f;--ghost:#2a2a27;--accent:#7aa2f7;--accent-soft:#1d2433}}
+:root[data-theme="dark"]{--bg:#161615;--card:#1f1f1d;--ink:#eeede8;--mute:#9a9a94;--line:#34332f;--ghost:#2a2a27;--accent:#7aa2f7;--accent-soft:#1d2433}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+nav.side{border-right:1px solid var(--line);padding:20px 12px;background:var(--card)}
+.brand{font-weight:800;font-size:17px;padding:0 10px 18px}
+.nav-i{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-radius:8px;margin-bottom:2px;font-size:14px;border:0;background:none;width:100%;text-align:left}
+.nav-i.on{background:var(--ghost);font-weight:700}
+.nav-i.off{color:var(--mute);opacity:.6;cursor:not-allowed}
+.soon{font-size:10px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line);border-radius:99px;padding:1px 6px}
+main{padding:28px 32px;max-width:980px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h1{font-size:24px;margin:0}
+.sub{color:var(--mute);margin:2px 0 0}
+.cta{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:700}
+.ghostbtn{background:none;border:1px solid var(--line);border-radius:10px;padding:9px 14px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:13px;background:var(--card)}
+.chip.inf{border-style:dashed}
+.chip.edit::after{content:" ✎";color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.food{font-weight:700}
+.meta{font-size:12.5px;color:var(--mute)}
+.swapl{font-size:13px;color:var(--accent);margin-top:2px}
+.tier{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff;white-space:nowrap;align-self:flex-start}
+.t-hi{background:var(--hi)}.t-med{background:var(--med)}.t-lo{background:var(--lo)}.t-unk{background:#8a8a85}
+.c-hi{color:var(--hi)}.c-med{color:var(--med)}.c-lo{color:var(--lo)}.c-unk{color:var(--mute)}
+.banner{background:#fff7e6;border:1px solid #f5d9a8;color:#7a4b00;border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:14px}
+.agentbtn{position:fixed;right:24px;bottom:24px;background:var(--ink);color:var(--bg);border:0;border-radius:99px;padding:12px 18px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:5}
+.scrim{position:fixed;inset:0;background:rgba(20,20,18,.45);display:none;align-items:center;justify-content:center;z-index:10;padding:16px}
+.scrim.open{display:flex}
+.modal{background:var(--card);border-radius:16px;width:min(620px,100%);max-height:92vh;overflow:auto;padding:22px;position:relative}
+.x{position:absolute;right:14px;top:12px;border:0;background:none;font-size:20px;color:var(--mute)}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mute);font-size:13.5px}
+.drop.has{border-style:solid;color:var(--ink)}
+.drop img{max-height:160px;max-width:100%;border-radius:8px;display:block;margin:0 auto 8px}
+.or{text-align:center;color:var(--mute);font-size:12px;margin:10px 0}
+input[type=text],select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit;background:var(--card);color:var(--ink)}
+.help{font-size:12px;color:var(--mute);margin-top:4px}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.quick button{border:1px solid var(--line);background:var(--ghost);border-radius:99px;padding:4px 10px;font-size:12.5px}
+.big{font-size:26px;font-weight:800;margin-top:8px}
+.badge{display:inline-block;font-size:12px;font-weight:600;background:var(--ghost);border-radius:6px;padding:3px 8px;margin-top:6px}
+.bar{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#bbf7d0,#fde68a,#fdba74);margin:18px 0 4px}
+.band{position:absolute;top:-4px;height:20px;border:2px solid var(--ink);border-radius:6px;background:rgba(29,29,27,.1);transition:all .5s}
+.dot{position:absolute;top:-3px;width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid #fff;transition:all .5s}
+.scale{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mute)}
+.ref{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px}
+.ref b{font-weight:700}
+.swap{margin-top:12px;border:1px solid #c7d6f0;background:var(--accent-soft);border-radius:10px;padding:12px;font-size:14px}
+.why{font-size:12.5px;color:var(--mute);margin:10px 0 0;padding-left:18px}
+.miss{font-size:12.5px;color:var(--mute);margin-top:8px}
+.cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.col{border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px}
+.col.best{border:2px solid var(--lo)}
+.col h4{margin:0 0 4px}
+.col .t{font-weight:800;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chips button.chip{cursor:pointer}
+.msg{padding:10px 12px;border-radius:12px;margin:8px 0;font-size:14px}
+.msg.u{background:var(--ghost);margin-left:20%}
+.msg.a{border:1px solid var(--line);margin-right:10%}
+.state-pick{position:fixed;left:12px;bottom:12px;font-size:11px;opacity:.75;z-index:6}
+.state-pick select{width:auto;padding:4px;font-size:11px}
+.empty{text-align:center;padding:40px 10px;color:var(--mute)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes s{to{transform:rotate(360deg)}}
+.sample{font-size:10px;letter-spacing:.08em;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.src{font-size:11.5px;color:var(--mute);margin-top:10px}
+.edit-pop{display:flex;gap:6px;flex-wrap:wrap;margin:-2px 0 10px}
+@media (max-width:760px){
+ .app{grid-template-columns:1fr}
+ nav.side{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:6px;border-right:0;border-top:1px solid var(--line);z-index:4}
+ nav.side .brand{display:none}
+ .nav-i{flex-direction:column;font-size:11px;padding:6px;width:auto}
+ .nav-i .soon{display:none}
+ main{padding:18px 16px 90px}
+ .agentbtn{bottom:76px;right:16px}
+ .cmp{grid-template-columns:1fr}
+ .state-pick{bottom:70px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="side" aria-label="Modules">
+ <div class="brand">Health OS</div>
+ <button class="nav-i on">🧪 Exposure</button>
+ <button class="nav-i off" title="Coming soon" disabled>🩸 Bloodwork <span class="soon">Soon</span></button>
+ <button class="nav-i off" title="Coming soon" disabled>🌙 Sleep <span class="soon">Soon</span></button>
+ <button class="nav-i off" title="Coming soon" disabled>🏋️ Gym &amp; Nutrition <span class="soon">Soon</span></button>
+ <button class="nav-i off" title="Coming soon" disabled>🧭 Overview <span class="soon">Soon</span></button>
+</nav>
+<main id="main"></main>
+</div>
+
+<button class="agentbtn" id="agentBtn">✦ Ask Health OS</button>
+
+<div class="scrim" id="checkScrim"><div class="modal" id="checkModal" role="dialog" aria-label="Check a food"></div></div>
+<div class="scrim" id="agentScrim"><div class="modal" id="agentModal" role="dialog" aria-label="Ask Health OS"></div></div>
+
+<div class="state-pick">Demo state:
+<select id="statePick">
+ <option value="normal">Week with checks</option>
+ <option value="empty">Empty dashboard</option>
+ <option value="offline">Offline (cached)</option>
+</select></div>
+
+<script>
+const LOCATIONS=["New York, US","San Francisco, US","London, UK","Aberdeen, UK","Paris, FR","Other"];
+const S={state:"normal",location:"New York, US",photo:null,photoData:null,text:"",history:[],live:false};
+
+// SAMPLE estimates. Food figures: PlasticList DEHP-equivalents (ng/g, %EFSA TDI per serving, 70 kg). Water: docs/water-evidence.md.
+const EST={
+ wrap:{kind:"food",name:"Spinach Feta Wrap, warmed",attrs:[["Starbucks",0],["Paper sleeve + film",1],["Heated",0,"heated"],["Prepared meal",0]],
+  tier:"hi",word:"Higher than most foods",ev:"🧪 Lab-measured · T1 · 3 samples",band:[48,44],dot:72,
+  ref:"<b>0.1% to 0.7%</b> of the EU tolerable daily intake (EFSA, DEHP-equivalents) per serving. The US EPA has set no reference dose for this group.",
+  swap:"<b>Swap:</b> Bacon Gruyere Egg Bites. <b>Typically about 4x lower</b> (lab medians 17 vs 76 ng/g), but the sample ranges overlap. <span class='badge'>Swap Impact: lab-backed</span>",
+  why:["Heated food in film packaging tends to pick up more phthalates","Relative risk compared with other foods, not a safety verdict"],miss:null},
+ wrapCold:{kind:"food",name:"Spinach Feta Wrap, not heated",attrs:[["Starbucks",0],["Paper sleeve + film",1],["Not heated",0,"heated"],["Prepared meal",0]],
+  tier:"med",word:"Probably typical",ev:"Inferred from category · T3",band:[25,50],dot:null,
+  ref:"No lab sample of the unheated wrap. Heated samples were <b>0.1% to 0.7%</b> of the EU tolerable daily intake (EFSA).",
+  swap:"<b>Swap:</b> eating it unheated is likely lower than heated. <span class='badge'>Swap Impact: inferred (direction only)</span>",
+  why:["Heat raises migration from packaging (migration modelling)","We only have lab data for the heated version"],miss:"Would sharpen this: a lab test of the unheated wrap (not in our data yet)"},
+ unknown:{kind:"food",name:"Unrecognised item",attrs:[["Unknown packaging",1],["Unknown category",1]],
+  tier:"unk",word:"We can't rate this yet",ev:"Global prior · T5",band:[5,90],dot:null,
+  ref:"No Reference Level comparison without knowing what it is.",
+  swap:"<b>One question would help most:</b> what is it packaged in? <div class='quick'><button onclick=\"answerUnknown('plastic')\">Plastic</button><button onclick=\"answerUnknown('can')\">Can</button><button onclick=\"answerUnknown('glass')\">Glass / none</button></div>",
+  why:["Neither the photo nor the text matched a product or category"],miss:"Would sharpen this: packaging · brand · whether it was heated"},
+ water:{kind:"water",name:"Drinking water here",attrs:[["📍 New York",0],["Hotel, older building",1],["Cold",0]]}
+};
+const SEED=[
+ {k:"wrap",n:3,label:"Starbucks Spinach Feta Wrap, warmed",tier:"hi",ev:"T1 lab-measured",swap:"Egg bites: typically about 4x lower"},
+ {k:"water",n:4,label:"Bottled water (PET), hotel",tier:"med",ev:"T3 studies",swap:"NYC tap, cold, run 30s+"},
+ {k:"chick",n:2,label:"Canned chickpeas",tier:"med",ev:"T3 category",swap:"Dried or jarred"},
+];
+
+const $=s=>document.querySelector(s);
+function tierClass(t){return {hi:"t-hi",med:"t-med",lo:"t-lo",unk:"t-unk"}[t]}
+function tierWord(t){return {hi:"High",med:"Med",lo:"Low",unk:"Unrated"}[t]}
+
+function renderDash(){
+ const rows=S.state==="empty"?[]:[...S.history,...SEED];
+ const unrated=S.state==="empty"?0:2+S.history.filter(h=>h.tier==="unk").length;
+ $("#main").innerHTML=`
+ ${S.state==="offline"?'<div class="banner">You\'re offline. Showing saved results; new checks use cached data only.</div>':''}
+ <div class="top"><div><h1>Exposure</h1><p class="sub">Microplastics and plastic chemicals from what you eat and drink <span class="sample">SAMPLE</span></p></div>
+ <div style="display:flex;gap:8px;align-items:center"><select id="locSel" aria-label="Location" style="width:auto">${LOCATIONS.map(l=>`<option ${l===S.location?"selected":""}>📍 ${l}</option>`).join("")}</select>
+ <button class="cta" onclick="openCheck()">+ Check a food</button></div></div>
+ ${rows.length?`<div class="card"><h3>Your biggest sources this week</h3>
+ ${rows.map((r,i)=>`<div class="row"><div><div class="food">${i+1}. ${r.label}</div><div class="meta">${r.n}× this week · ${r.ev}</div><div class="swapl">Swap: ${r.swap} →</div></div><span class="tier ${tierClass(r.tier)}">${tierWord(r.tier)}</span></div>`).join("")}
+ <div class="meta" style="margin-top:8px">${unrated} checks unrated (not enough data). There's no single exposure score on purpose: tiers don't add up.</div></div>`
+ :`<div class="card empty"><div style="font-size:34px">🥤</div><h2 style="color:var(--ink);margin:8px 0 4px">Nothing checked yet</h2><p>Snap or type what you're about to eat or drink. Each check builds your weekly picture.</p><button class="cta" onclick="openCheck()">Check your first food</button></div>`}
+ <p class="meta" style="margin-top:16px">Estimates are relative and come with an evidence label. Lab data: PlasticList (US). Water: NYC DEP 2025 report, Mason et al. 2018.</p>`;
+ $("#locSel").onchange=e=>{S.location=e.target.value.replace("📍 ","")};
+}
+
+function openCheck(){S.photo=null;S.photoData=null;S.text="";renderCheckInput();$("#checkScrim").classList.add("open")}
+function closeCheck(){$("#checkScrim").classList.remove("open");renderDash()}
+function renderCheckInput(err){
+ $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>
+ <h2 style="margin:0 0 12px">Check a food</h2>
+ ${err?`<div class="banner">${err}</div>`:''}
+ <label class="drop ${S.photo?"has":""}" id="drop">${S.photo?`<img src="${S.photo}" alt="your photo">Photo added · <u>change</u>`:`📷 Drop a photo or tap to take one<br><span style="font-size:12px">Photos show the packaging and whether it's hot, which sharpens the estimate</span>`}
+ <input type="file" accept="image/*" capture="environment" id="file" hidden></label>
+ <div class="or">and/or</div>
+ <input type="text" id="txt" placeholder='What is it? e.g. "Starbucks spinach feta wrap"' value="${S.text}">
+ <div class="help">Brand and product name can unlock lab-tested results</div>
+ <div class="quick"><span class="meta">Try:</span><button onclick="quick('Starbucks spinach feta wrap, warmed')">Starbucks wrap</button><button onclick="quick('tap water in my hotel room')">Hotel tap water</button><button onclick="quick('blurry')">Unreadable photo</button><button onclick="quick('mystery snack')">Something unknown</button></div>
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:8px"><span class="chip">📍 ${S.location}</span><button class="cta" onclick="submitCheck()">Check it</button></div>`;
+ $("#file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.photo=r.result;S.photoData=r.result;S.text=$("#txt").value;renderCheckInput()};r.readAsDataURL(f)};
+ $("#txt").oninput=e=>S.text=e.target.value;
+}
+function quick(t){if(t==="blurry"){S.text="";S.photo=null;renderCheckInput("We couldn't make out that photo. Try again in better light, or type what it is instead.");return}S.text=t;submitCheck()}
+
+function classify(text){
+ const t=(text||"").toLowerCase();
+ if(/water|tap|bottle|fountain|machine/.test(t))return "water";
+ if(/wrap|starbucks|feta/.test(t))return /not heated|unheated|cold/.test(t)?"wrapCold":"wrap";
+ return "unknown";
+}
+async function submitCheck(){
+ S.text=($("#txt")||{}).value||S.text;
+ if(!S.text&&!S.photo){renderCheckInput("Add a photo or type what it is.");return}
+ $("#checkModal").innerHTML=`<p><span class="spinner"></span>Reading ${S.photo?"your photo":"that"}…</p>`;
+ let key=classify(S.text),attrsLive=null;
+ if(S.photoData&&S.state!=="offline"){
+  try{const r=await fetch("/api/extract",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({image:S.photoData,text:S.text,location:S.location})});
+   if(r.ok){const j=await r.json();key=j.estimate_key||key;attrsLive=j.chips||null;S.live=true}}catch(e){}
+ } else await new Promise(r=>setTimeout(r,700));
+ showResult(key,attrsLive);
+}
+function showResult(key,attrsLive){
+ const e=EST[key];
+ if(e.kind==="water"){renderWater(e,attrsLive);return}
+ const attrs=attrsLive||e.attrs;
+ $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>
+ ${S.photo?`<img src="${S.photo}" alt="" style="max-height:120px;border-radius:10px">`:''}
+ <div class="food" style="font-size:19px">${e.name} <span class="sample">${S.live?"LIVE EXTRACT":"SAMPLE"}</span></div>
+ <div class="chips">${attrs.map(a=>`<button class="chip edit ${a[1]?"inf":""}" ${a[2]==="heated"?`onclick="toggleHeat('${key}')"`:''} title="${a[1]?"Inferred: tap to correct":"Tap to correct"}">${a[0]}</button>`).join("")}<span class="chip">📍 ${S.location}</span></div>
+ <div class="big c-${e.tier}">${e.word}</div>
+ <div class="badge">${e.ev}</div>
+ <div class="bar"><div class="band" style="left:${e.band[0]}%;width:${e.band[1]}%"></div>${e.dot!=null?`<div class="dot" style="left:${e.dot}%"></div>`:''}</div>
+ <div class="scale"><span>Lower</span><span>Typical</span><span>Higher</span></div>
+ <div class="ref">📏 <b>Reference Level:</b> ${e.ref}</div>
+ <div class="swap">${e.swap}</div>
+ ${e.miss?`<div class="miss">${e.miss}</div>`:''}
+ <ul class="why">${e.why.map(w=>`<li>${w}</li>`).join("")}</ul>
+ <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="ghostbtn" onclick="openCheck()">Check another</button><button class="cta" onclick="logAndClose('${key}')">Done</button></div>`;
+}
+function toggleHeat(key){showResult(key==="wrap"?"wrapCold":"wrap")}
+function answerUnknown(p){
+ const m={plastic:["med","Probably typical, maybe higher","Plastic packaging: wide range"],can:["med","Probably typical","Can liners can contain bisphenols"],glass:["lo","Probably lower","Glass or no packaging: less to migrate"]}[p];
+ Object.assign(EST.unknown,{tier:m[0],word:m[1],ev:"Inferred from packaging · T3",band:[15,60],why:[m[2],"Estimated from packaging alone"],swap:"<b>Swap:</b> where you can, choose glass or unpackaged. <span class='badge'>Swap Impact: inferred</span>"});
+ showResult("unknown");
+}
+function renderWater(e,attrsLive){
+ $("#checkModal").innerHTML=`<button class="x" onclick="closeCheck()" aria-label="Close">×</button>
+ <div class="food" style="font-size:19px">${e.name} <span class="sample">SAMPLE</span></div>
+ <div class="chips">${(attrsLive||e.attrs).map(a=>`<button class="chip edit ${a[1]?"inf":""}">${a[0]}</button>`).join("")}</div>
+ <div class="cmp">
+  <div class="col best"><h4>Tap, cold, run 30s+</h4><div class="t c-lo">Lower</div><div class="badge">Official report · T3</div><p>No lead in the city's water mains. The risk is old building pipes.</p><div class="ref" style="font-size:12px">📏 Lead: 10 vs action level 15 µg/L (90th percentile of homes, NYC DEP)<br>PFOA: at most 2.7 vs EPA limit 4.0 ng/L</div></div>
+  <div class="col"><h4>Bottled (PET)</h4><div class="t c-med">Higher</div><div class="badge">Peer-reviewed · T3</div><p>About 2x the microplastic particles of tap.</p><div class="ref" style="font-size:12px">📏 Microplastics: no reference level exists<br>Antimony: under EU limit unless stored hot</div></div>
+  <div class="col"><h4>Water machine</h4><div class="t c-unk">Unknown</div><div class="badge">Little data · T5</div><p>Depends on the filter and how well it's cleaned.</p><div class="ref" style="font-size:12px">📏 No reference data for this machine. Snap it to read its filter type.</div></div>
+ </div>
+ <div class="swap"><b>Do this:</b> run the cold tap for 30 seconds to 2 minutes, then fill a glass or steel bottle. <span class="badge">Swap Impact: peer-reviewed, size cut-offs vary</span></div>
+ <div class="miss">Would sharpen this: building age or pipe type · a lab test of this tap (not in our data yet; our lab dataset has SF taps only)</div>
+ <div class="src">Sources: NYC DEP 2025 Drinking Water Supply and Quality Report; Mason et al. 2018 (Frontiers in Chemistry).</div>
+ <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="ghostbtn" onclick="openCheck()">Check another</button><button class="cta" onclick="closeCheck()">Done</button></div>`;
+}
+function logAndClose(key){
+ const e=EST[key];
+ const lab={wrap:"Starbucks Spinach Feta Wrap, warmed",wrapCold:"Starbucks Spinach Feta Wrap, unheated",unknown:"Unrecognised item"}[key];
+ const ex=S.history.find(h=>h.label===lab);
+ if(ex)ex.n++;else S.history.unshift({n:1,label:lab+" (just now)",tier:e.tier,ev:e.ev.replace(/^[^A-Za-z]+/,""),swap:key==="wrap"?"Egg bites: typically about 4x lower":"see result"});
+ closeCheck();
+}
+
+const QA={
+ "What's my biggest source this week?":"Your warmed Starbucks Spinach Feta Wrap (3 times this week). It's lab-measured (T1) and higher than most foods, though each serving is under 1% of the EU tolerable daily intake. Easiest swap: the egg bites, typically about 4x lower.",
+ "Plan a lower-exposure lunch near me":"Near you in New York: pick something served on a plate or in paper rather than heated in plastic film, and drink cold tap water in a glass. That removes the two biggest patterns in your week: heated film packaging and bottled water.",
+ "Is the tap water in my hotel OK?":"New York's mains carry no lead; the risk is the building's pipes. Run the cold tap for 30 seconds to 2 minutes before filling. Bottled water typically carries about 2x the microplastic particles of tap."
+};
+function openAgent(){
+ $("#agentModal").innerHTML=`<button class="x" onclick="$('#agentScrim').classList.remove('open')" aria-label="Close">×</button>
+ <h2 style="margin:0 0 4px">✦ Ask Health OS</h2><p class="meta" style="margin:0 0 10px">Preview: exposure questions only for now. Sleep, bloodwork and training are coming.</p>
+ <div id="chat"></div>
+ <div class="quick">${Object.keys(QA).map(q=>`<button onclick="ask(this.textContent)">${q}</button>`).join("")}</div>
+ <div style="display:flex;gap:8px;margin-top:10px"><input type="text" id="q" placeholder="Ask anything…"><button class="cta" onclick="ask($('#q').value)">Ask</button></div>`;
+ $("#agentScrim").classList.add("open");
+}
+function ask(q){if(!q)return;const a=QA[q]||"I can't answer that yet. In this preview I can answer questions about your exposure checks. Cross-module answers (sleep, bloodwork, training) are coming.";
+ $("#chat").insertAdjacentHTML("beforeend",`<div class="msg u">${q}</div><div class="msg a">${a}</div>`);const i=$("#q");if(i)i.value=""}
+
+$("#agentBtn").onclick=openAgent;
+$("#statePick").onchange=e=>{S.state=e.target.value;renderDash()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#checkScrim").classList.remove("open");$("#agentScrim").classList.remove("open");renderDash()}});
+renderDash();
+</script>
+</body>
+</html>
